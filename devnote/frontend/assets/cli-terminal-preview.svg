@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 380" width="100%" height="100%">
+  <defs>
+    <style>
+      .mono { font-family: "SF Mono", Menlo, Monaco, Consolas, "Courier New", monospace; }
+      .sans { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; }
+      .cursor { animation: blink 1s step-end infinite; }
+      @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    </style>
+    <linearGradient id="term-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#050811"/>
+      <stop offset="100%" stop-color="#0a0f1d"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="940" height="380" rx="12" fill="url(#term-bg)" stroke="#1e293b" stroke-width="1.2"/>
+
+  <!-- Terminal Title Bar -->
+  <rect width="940" height="36" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <rect width="940" height="12" y="24" fill="#0f172a"/>
+
+  <!-- Window Dots -->
+  <circle cx="20" cy="18" r="5" fill="#ef4444"/>
+  <circle cx="36" cy="18" r="5" fill="#eab308"/>
+  <circle cx="52" cy="18" r="5" fill="#22c55e"/>
+
+  <text x="470" y="22" class="sans" font-size="11" font-weight="600" fill="#64748b" text-anchor="middle">terminal — zsh — 80×24</text>
+
+  <!-- Terminal Commands & Logs -->
+  <g transform="translate(24, 60)">
+    <!-- Command 1: doctor -->
+    <text x="0" y="16" class="mono" font-size="12" font-weight="700" fill="#38bdf8">$ devnote doctor</text>
+    <text x="0" y="38" class="mono" font-size="11.5" fill="#22c55e">[✓] Python Runtime: 3.15.2 (>= 3.12 required)</text>
+    <text x="0" y="56" class="mono" font-size="11.5" fill="#22c55e">[✓] Node.js Engine: v26.13.0 (JavaScript runtime ready)</text>
+    <text x="0" y="74" class="mono" font-size="11.5" fill="#22c55e">[✓] SQLite Database: WAL Mode Enabled &amp; Writable</text>
+    <text x="0" y="92" class="mono" font-size="11.5" fill="#22c55e">[✓] PDF Engine: PyMuPDF 1.28.2 &amp; ReportLab (Embedded metadata ready)</text>
+    <text x="0" y="110" class="mono" font-size="11.5" fill="#22c55e">[✓] Sandbox Isolation: Subprocess limits &amp; environment sanitization active</text>
+    <text x="0" y="128" class="mono" font-size="11.5" fill="#22c55e">[✓] Network Interface: IP 192.168.1.50 (Ready for iPad connection)</text>
+
+    <!-- Command 2: start -->
+    <text x="0" y="160" class="mono" font-size="12" font-weight="700" fill="#38bdf8">$ devnote start --host 0.0.0.0 --port 8080</text>
+    
+    <!-- Banner Frame -->
+    <text x="0" y="182" class="mono" font-size="11.5" fill="#38bdf8">=================================================================</text>
+    <text x="0" y="200" class="mono" font-size="12" font-weight="700" fill="#f8fafc">🚀 DevNote v1.1.0 (Local Edition — Cross-Platform)</text>
+    <text x="0" y="218" class="mono" font-size="11.5" fill="#38bdf8">=================================================================</text>
+    
+    <text x="0" y="238" class="mono" font-size="11.5" fill="#94a3b8">   Local URL:    </text>
+    <text x="135" y="238" class="mono" font-size="11.5" fill="#38bdf8">http://127.0.0.1:8080</text>
+
+    <text x="0" y="256" class="mono" font-size="11.5" fill="#94a3b8">   iPad / LAN:   </text>
+    <text x="135" y="256" class="mono" font-size="11.5" fill="#4ade80">http://192.168.1.50:8080?token=k9_sA7df8203...</text>
+
+    <text x="0" y="274" class="mono" font-size="11.5" fill="#94a3b8">   Access Token: </text>
+    <text x="135" y="274" class="mono" font-size="11.5" fill="#fbbf24">k9_sA7df8203...</text>
+
+    <text x="0" y="292" class="mono" font-size="11" fill="#64748b">   🔒 Network Access Protected by Token Authentication</text>
+    <text x="0" y="308" class="mono" font-size="11.5" fill="#38bdf8">=================================================================</text>
+
+    <!-- Active Server Prompt -->
+    <text x="0" y="332" class="mono" font-size="11.5" fill="#94a3b8">INFO: Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)</text>
+    <rect x="585" y="321" width="8" height="15" fill="#38bdf8" class="cursor"/>
+  </g>
+</svg>

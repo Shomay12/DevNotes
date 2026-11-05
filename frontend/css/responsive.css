@@ -226,6 +226,341 @@
 }
 
 /* ==========================================================================
+   DevSearch — Unified Search Workspace Extensions & Controls
+   ========================================================================== */
+
+/* DevSearch Engine Badge */
+.devsearch-engine-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: var(--accent-light);
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-border);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  margin-left: 6px;
+}
+
+/* DevSearch Top Nav Tabs */
+.devsearch-nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-subtle);
+  overflow-x: auto;
+}
+
+.devsearch-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  font-size: 11.5px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  background: none;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.devsearch-nav-btn:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.devsearch-nav-btn.active {
+  background-color: var(--bg-tertiary);
+  color: var(--accent-primary);
+  border-color: var(--border-subtle);
+}
+
+/* DevSearch Body Container & View Panes */
+.devsearch-body-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.devsearch-view {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.devsearch-view.active {
+  display: flex;
+}
+
+/* Filters Bar */
+.search-filters-bar {
+  display: flex;
+  gap: 6px;
+  padding: 0 14px 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.search-filter-select {
+  flex: 1;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-family: inherit;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  outline: none;
+}
+
+/* Intent Banner */
+.search-intent-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 14px;
+  background-color: var(--bg-tertiary);
+  font-size: 11px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Card Actions */
+.search-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-card-action {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition: all var(--transition-fast);
+}
+
+.btn-card-action:hover {
+  background-color: var(--accent-light);
+  color: var(--accent-primary);
+  border-color: var(--accent-border);
+}
+
+.btn-card-action.btn-insert-ref {
+  background-color: var(--accent-light);
+  color: var(--accent-primary);
+  border-color: var(--accent-border);
+}
+
+.btn-card-action.btn-insert-code {
+  background-color: #dcfce7;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+/* Source Badges */
+.badge-so { background-color: #ffedd5; color: #c2410c; }
+.badge-gh { background-color: #f1f5f9; color: #334155; }
+.badge-offline { background-color: #dcfce7; color: #15803d; }
+.badge-doc { background-color: #e0f2fe; color: #0369a1; }
+
+/* Code Container Inside Search Card */
+.search-result-code-container {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--code-border);
+  overflow: hidden;
+  background-color: var(--code-bg);
+}
+
+.code-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 8px;
+  background-color: var(--bg-tertiary);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--code-border);
+}
+
+.btn-copy-code {
+  background: none;
+  border: none;
+  font-size: 10px;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.btn-copy-code:hover {
+  color: var(--accent-primary);
+}
+
+/* Search Spinner */
+.search-spinner {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border-subtle);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Preview Drawer (Slide-in) */
+.devsearch-preview-drawer {
+  position: absolute;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-primary);
+  border-left: 1px solid var(--border-subtle);
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-lg);
+}
+
+.devsearch-preview-drawer.open {
+  right: 0;
+}
+
+.preview-drawer-header {
+  height: var(--header-height);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: var(--bg-secondary);
+}
+
+.preview-source-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.btn-close-preview {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.preview-drawer-content {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.preview-drawer-actions {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-subtle);
+  background-color: var(--bg-secondary);
+  display: flex;
+  gap: 8px;
+}
+
+/* History, Saved, Docs, Settings Layouts */
+.devsearch-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.devsearch-history-row,
+.devsearch-doc-pack-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color var(--transition-fast);
+}
+
+.devsearch-history-row:hover,
+.devsearch-doc-pack-row:hover {
+  background-color: var(--bg-hover);
+}
+
+.history-info, .doc-pack-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.history-query, .doc-pack-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.history-meta, .doc-pack-desc, .doc-pack-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.history-actions, .doc-pack-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-rerun-query, .btn-del-history {
+  background: none;
+  border: 1px solid var(--border-subtle);
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.devsearch-docs-desc {
+  padding: 10px 16px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.devsearch-settings-form {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ==========================================================================
    Responsive Breakpoints for MacBook, iPad & Touch Displays
    ========================================================================== */
 

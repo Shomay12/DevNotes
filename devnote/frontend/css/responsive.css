@@ -1,0 +1,311 @@
+/* ==========================================================================
+   DevNote — Developer Search Panel & Responsive iPad/Tablet Styling
+   ========================================================================== */
+
+/* Developer Search Workspace Panel */
+#developer-search-panel {
+  width: 480px;
+  min-width: 320px;
+  max-width: 60%;
+  height: 100vh;
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  z-index: 15;
+  transition: width var(--transition-normal);
+}
+
+#developer-search-panel.collapsed {
+  display: none !important;
+}
+
+/* Search Header */
+.search-panel-header {
+  height: var(--header-height);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: var(--bg-secondary);
+  flex-shrink: 0;
+}
+
+.search-title {
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+}
+
+/* Search Input Box */
+.search-input-wrapper {
+  padding: 12px 14px 6px;
+  position: relative;
+}
+
+.search-input-box {
+  width: 100%;
+  padding: 8px 32px 8px 34px;
+  font-size: 13px;
+  font-family: inherit;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.search-input-box:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px var(--accent-light);
+}
+
+.search-icon-left {
+  position: absolute;
+  left: 24px;
+  top: 20px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 24px;
+  top: 18px;
+  background: none;
+  border: none;
+  color: var(--text-subtle);
+  cursor: pointer;
+  display: none;
+}
+
+.search-clear-btn.visible {
+  display: block;
+}
+
+/* Category Filter Tabs */
+.search-tabs-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px 10px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.search-tab-pill {
+  padding: 4px 10px;
+  font-size: 11.5px;
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.search-tab-pill:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.search-tab-pill.active {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+}
+
+/* Search Results List */
+.search-results-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.search-result-card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast);
+}
+
+.search-result-card:hover {
+  border-color: var(--accent-border);
+}
+
+.search-result-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.search-result-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.search-result-snippet {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.search-result-code {
+  background-color: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--code-text);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.search-result-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border-light);
+}
+
+.search-result-source {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.btn-insert-notebook {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  background-color: var(--accent-light);
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-border);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-insert-notebook:hover {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+}
+
+/* Empty & Loading Search States */
+.search-state-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  gap: 10px;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints for MacBook, iPad & Touch Displays
+   ========================================================================== */
+
+/* iPad & Tablet Landscape / Medium Screens (<= 1024px) */
+@media screen and (max-width: 1024px) {
+  :root {
+    --sidebar-width: 230px;
+  }
+
+  #developer-search-panel {
+    width: 380px;
+  }
+
+  .editor-scroll-area {
+    padding: 20px 24px 80px;
+  }
+}
+
+/* iPad Portrait & Mobile (<= 768px) */
+@media screen and (max-width: 768px) {
+  #app-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-xl);
+  }
+
+  #app-sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .split-resizer {
+    display: none;
+  }
+
+  #developer-search-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    max-width: 100vw;
+    box-shadow: var(--shadow-xl);
+  }
+
+  .editor-scroll-area {
+    padding: 16px 14px 60px;
+  }
+
+  .notebook-title-input {
+    font-size: 15px;
+  }
+
+  .btn {
+    padding: 8px 12px; /* touch-friendly padding */
+  }
+
+  .block-hover-controls {
+    display: flex; /* Always visible on touch devices */
+    opacity: 0.85;
+  }
+}
+
+/* Apple Pencil & Stylus Touch Optimizations */
+@media (pointer: coarse) {
+  .draw-tool-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .color-dot {
+    width: 22px;
+    height: 22px;
+  }
+
+  .handwriting-canvas {
+    touch-action: none !important;
+  }
+}

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="DevNote" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>DevNote — Interactive Developer Notebook & Coding Workspace</title>
+
+  <!-- DevNote Stylesheets -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/sidebar.css" />
+  <link rel="stylesheet" href="/css/editor.css" />
+  <link rel="stylesheet" href="/css/responsive.css" />
+</head>
+<body>
+  <div id="app-root">
+    <!-- Left Navigation Sidebar -->
+    <aside id="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-wrapper">
+          <div class="brand-icon">D</div>
+          <span class="brand-title">DevNote</span>
+          <span class="brand-badge">PRO</span>
+        </div>
+        <!-- Mobile Sidebar Toggle -->
+        <button type="button" class="btn btn-icon-sm btn-mobile-close" id="btn-sidebar-close" style="display: none;">✕</button>
+      </div>
+
+      <div class="sidebar-action-container">
+        <button type="button" class="btn btn-new-notebook" id="btn-new-notebook">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          New Notebook
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-item active" data-nav="notebooks">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          <span>My Notebooks</span>
+        </div>
+        <div class="nav-item" data-nav="recent">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span>Recent Notebooks</span>
+        </div>
+        <div class="nav-item" data-nav="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span>Developer Search</span>
+        </div>
+        <div class="nav-item" data-nav="snippets">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          <span>Code Snippets</span>
+        </div>
+        <div class="nav-item" data-nav="import-pdf" id="nav-btn-import-pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <span>Import PDF Notebook</span>
+        </div>
+        <div class="nav-item" data-nav="archived">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+          <span>Archived</span>
+        </div>
+      </nav>
+
+      <div class="sidebar-section-header">
+        <span>Notebooks</span>
+      </div>
+
+      <div class="notebook-list" id="sidebar-notebook-list">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Designated Non-Intrusive Sponsorship Slot (Hosted Edition Only) -->
+      <div id="hosted-sponsor-slot" style="display: none; padding: 10px 12px; margin: 4px 10px 8px; background-color: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+        <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-subtle); margin-bottom: 3px;">Sponsor • Hosted Cloud</div>
+        <div style="font-size: 11.5px; font-weight: 600; color: var(--text-primary);">DevTools Cloud Sandboxes</div>
+        <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 2px;">Powering isolated cloud execution for iPad users.</div>
+      </div>
+
+      <div class="sidebar-footer">
+        <button type="button" class="theme-toggle-btn" title="Toggle Light / Dark Theme">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <span>Dark Mode</span>
+        </button>
+        <span style="font-size: 11px; color: var(--text-subtle);">v1.0</span>
+      </div>
+    </aside>
+
+    <!-- Resizable Workspace Container -->
+    <main id="workspace-container">
+      <!-- C. Developer Search Workspace (Split Screen) -->
+      <section id="developer-search-panel" class="collapsed">
+        <!-- Injected by SearchWorkspace -->
+      </section>
+
+      <!-- Draggable Split Resizer -->
+      <div id="split-resizer" class="split-resizer" style="display: none;" title="Drag to resize search & editor panels"></div>
+
+      <!-- B. Main Notebook Workspace -->
+      <section id="notebook-workspace">
+        <!-- Injected by NotebookEditor -->
+      </section>
+    </main>
+  </div>
+
+  <!-- PDF Export Modal -->
+  <div id="export-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Export Notebook to PDF</h3>
+        <button type="button" class="btn btn-icon-sm btn-close-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 14px; color: var(--text-secondary); line-height: 1.5;">
+          Export your notebook into a professional, publication-ready PDF document including:
+        </p>
+        <ul style="margin-left: 20px; margin-bottom: 16px; color: var(--text-secondary); line-height: 1.8;">
+          <li>Document title, metadata banner, and tags</li>
+          <li>Headings, formatted paragraphs, and checklists</li>
+          <li>Syntax-highlighted Python and JavaScript code blocks</li>
+          <li>Code execution outputs & terminal logs</li>
+          <li>Apple Pencil and stylus handwritten notes & sketches</li>
+          <li>Embedded loss-free document state for round-trip continuation</li>
+        </ul>
+        <div style="background-color: var(--accent-light); border: 1px solid var(--accent-border); border-radius: var(--radius-md); padding: 12px; font-size: 12.5px; color: var(--accent-primary);">
+          <strong>Lossless Round-Trip Guarantee:</strong> DevNote embeds the canonical document state inside the generated PDF. You can upload this PDF anytime to resume editing without duplicate files!
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-close-modal">Cancel</button>
+        <button type="button" class="btn btn-primary btn-confirm-export">Export & Download PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import Modal (PDF & JSON) -->
+  <div id="import-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Import Notebook (PDF or JSON)</h3>
+        <button type="button" class="btn btn-icon-sm btn-close-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 14px; color: var(--text-secondary); line-height: 1.5;">
+          Upload a DevNote exported PDF, canonical JSON notebook, or any technical PDF to reconstruct an editable workspace:
+        </p>
+        <div class="form-group">
+          <label class="form-label">Import Destination:</label>
+          <select id="import-target-select" class="form-select">
+            <option value="">Create as Canonical Notebook</option>
+          </select>
+        </div>
+        <div class="pdf-drop-zone" style="border: 2px dashed var(--border-strong); border-radius: var(--radius-lg); padding: 36px 20px; text-align: center; cursor: pointer; transition: all 0.2s;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 8px; color: var(--accent-primary);"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <div class="drop-zone-text" style="font-weight: 500; color: var(--text-primary); font-size: 13.5px;">Drag & drop DevNote PDF or JSON notebook here</div>
+          <span style="font-size: 11.5px; color: var(--text-muted); display: block; margin-top: 4px;">Supports .pdf, .devnote, and .json</span>
+          <input type="file" id="pdf-file-input" accept=".pdf,.json,.devnote" style="display: none;" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-close-modal">Cancel</button>
+        <button type="button" class="btn btn-primary btn-confirm-import">Upload & Reconstruct</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Network Access Token Dialog Modal -->
+  <div id="auth-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Workspace Access Token</h3>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 12px; color: var(--text-secondary); font-size: 13px; line-height: 1.5;">
+          This DevNote instance is listening beyond localhost. Enter the Access Token shown in your host terminal to connect.
+        </p>
+        <div class="form-group">
+          <label class="form-label">Access Token</label>
+          <input type="password" id="auth-token-input" class="form-input" placeholder="Paste access token from terminal..." />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-save-token">Connect Workspace</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Snippets Library Modal -->
+  <div id="snippets-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Code Snippet Library</h3>
+        <button type="button" class="btn btn-icon-sm btn-close-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <!-- New Snippet Form -->
+        <details style="margin-bottom: 16px; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 10px 14px;">
+          <summary style="font-weight: 600; cursor: pointer; font-size: 13px; color: var(--accent-primary);">+ Save New Snippet</summary>
+          <div style="margin-top: 12px;">
+            <div class="form-group">
+              <label class="form-label">Snippet Title</label>
+              <input type="text" id="new-snippet-title" class="form-input" placeholder="e.g. Binary Search Tree" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Language</label>
+              <select id="new-snippet-lang" class="form-select">
+                <option value="python">Python</option>
+                <option value="javascript">JavaScript</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Code</label>
+              <textarea id="new-snippet-code" class="form-textarea" style="font-family: var(--font-mono); font-size: 12.5px;" placeholder="def my_func(): ..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Description (Optional)</label>
+              <input type="text" id="new-snippet-desc" class="form-input" placeholder="Brief note about usage" />
+            </div>
+            <button type="button" class="btn btn-primary btn-sm btn-create-snippet">Save Snippet</button>
+          </div>
+        </details>
+        <!-- Snippets List -->
+        <div class="snippets-list-container">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-close-modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Application Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/handwriting.js"></script>
+  <script src="/js/code-blocks.js"></script>
+  <script src="/js/search.js"></script>
+  <script src="/js/pdf.js"></script>
+  <script src="/js/editor.js"></script>
+  <script src="/js/app.js"></script>
+
+  <script>
+    // Bind PDF import button from sidebar navigation
+    document.addEventListener("DOMContentLoaded", () => {
+      const importBtn = document.getElementById("nav-btn-import-pdf");
+      if (importBtn) {
+        importBtn.addEventListener("click", () => {
+          if (window.app && window.app.pdfManager) {
+            window.app.pdfManager.openImportModal();
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

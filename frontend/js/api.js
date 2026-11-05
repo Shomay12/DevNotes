@@ -177,7 +177,7 @@ const API = {
     });
   },
 
-  // Developer Search Workspace
+  // Developer Search Workspace (DevSearch)
   async searchNotebooks(q, category = "all") {
     const query = new URLSearchParams({ q: q || "", category });
     return this.request(`/api/search/notebooks?${query.toString()}`);
@@ -187,6 +187,87 @@ const API = {
     return this.request("/api/search/web", {
       method: "POST",
       body: JSON.stringify({ query, category }),
+    });
+  },
+
+  async unifiedSearch(payload) {
+    return this.request("/api/search", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+
+  async getSearchProviders() {
+    return this.request("/api/search/providers");
+  },
+
+  async getSearchHistory(limit = 20) {
+    return this.request(`/api/search/history?limit=${limit}`);
+  },
+
+  async deleteSearchHistory(id) {
+    return this.request(`/api/search/history/${id}`, {
+      method: "DELETE",
+    });
+  },
+
+  async clearSearchHistory() {
+    return this.request("/api/search/history", {
+      method: "DELETE",
+    });
+  },
+
+  async searchOfflineDocs(query, indexId = null) {
+    const params = new URLSearchParams({ q: query || "" });
+    if (indexId) params.append("index_id", indexId);
+    return this.request(`/api/search/docs?${params.toString()}`);
+  },
+
+  async getDocIndexes() {
+    return this.request("/api/search/docs/indexes");
+  },
+
+  async downloadDocIndex(indexId) {
+    return this.request("/api/search/docs/download", {
+      method: "POST",
+      body: JSON.stringify({ index_id: indexId }),
+    });
+  },
+
+  async deleteDocIndex(indexId) {
+    return this.request(`/api/search/docs/indexes/${indexId}`, {
+      method: "DELETE",
+    });
+  },
+
+  async getSavedResources(folder = null) {
+    const params = new URLSearchParams();
+    if (folder) params.append("folder", folder);
+    const qs = params.toString() ? `?${params.toString()}` : "";
+    return this.request(`/api/search/saved${qs}`);
+  },
+
+  async saveResource(data) {
+    return this.request("/api/search/saved", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async deleteSavedResource(id) {
+    return this.request(`/api/search/saved/${id}`, {
+      method: "DELETE",
+    });
+  },
+
+  async getSearchSettings() {
+    return this.request("/api/search/settings");
+  },
+
+  async updateSearchSettings(data) {
+    return this.request("/api/search/settings", {
+      method: "PUT",
+      body: JSON.stringify(data),
     });
   },
 

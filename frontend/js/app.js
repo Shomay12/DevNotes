@@ -81,8 +81,8 @@ class DevNoteApp {
     // 2. Initialize Developer Search Workspace
     const searchPanel = document.getElementById("developer-search-panel");
     const resizer = document.getElementById("split-resizer");
-    this.searchWorkspace = new SearchWorkspace(searchPanel, resizer, (searchItem) => {
-      this.editor.insertSearchResult(searchItem);
+    this.searchWorkspace = new SearchWorkspace(searchPanel, resizer, (searchItem, mode) => {
+      this.editor.insertSearchResult(searchItem, mode);
     });
 
     // 3. Initialize PDF Manager

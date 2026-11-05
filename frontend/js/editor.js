@@ -588,31 +588,35 @@ class NotebookEditor {
 
   /**
    * Insert Search Result Item directly into current notebook
-   * Never overwrites existing blocks!
+   * Never overwrites existing blocks! Supports insertion modes: 'both', 'reference', 'code'.
    */
-  insertSearchResult(searchItem) {
+  insertSearchResult(searchItem, mode = "both") {
     if (!this.notebook) return;
 
-    // 1. Insert an explanation paragraph or heading
-    const titleBlock = {
-      id: `block-${this.generateUUID()}`,
-      type: "heading",
-      level: 2,
-      content: searchItem.title,
-    };
-    this.blocks.push(titleBlock);
+    // 1. Insert Reference (Heading + Description + Source Link)
+    if (mode === "both" || mode === "reference") {
+      const titleBlock = {
+        id: `block-${this.generateUUID()}`,
+        type: "heading",
+        level: 2,
+        content: searchItem.title,
+      };
+      this.blocks.push(titleBlock);
 
-    if (searchItem.snippet) {
+      let refContent = searchItem.snippet || "";
+      if (searchItem.url) {
+        refContent += `\n\nSource: ${searchItem.source || "DevSearch"} (${searchItem.url})`;
+      }
       const snipBlock = {
         id: `block-${this.generateUUID()}`,
         type: "paragraph",
-        content: searchItem.snippet,
+        content: refContent,
       };
       this.blocks.push(snipBlock);
     }
 
-    // 2. If code exists, insert an executable code block
-    if (searchItem.code) {
+    // 2. Insert Executable Code Block
+    if ((mode === "both" || mode === "code") && searchItem.code) {
       const codeBlock = {
         id: `block-${this.generateUUID()}`,
         type: "code",
@@ -627,7 +631,8 @@ class NotebookEditor {
 
     this.renderBlocks();
     this.scheduleAutosave();
-    this.app.showToast(`Inserted "${searchItem.title}" into notebook`, "success");
+    const actionLabel = mode === "code" ? "code block" : mode === "reference" ? "reference" : "content";
+    this.app.showToast(`Inserted ${actionLabel} from "${searchItem.title}"`, "success");
 
     // Scroll to bottom
     const scrollArea = this.container.querySelector(".editor-scroll-area");

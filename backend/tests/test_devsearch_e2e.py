@@ -157,8 +157,8 @@ def test_devsearch_full_acceptance_workflow():
     assert any("async" in item["title"].lower() or "coroutine" in item["snippet"].lower() for item in offline_data["results"])
 
     # Step 18: Export notebook as PDF
-    pdf_res = client.post(f"/api/pdf/export/{nb_id}")
+    pdf_res = client.post(f"/api/notebooks/{nb_id}/export")
     assert pdf_res.status_code == 200
     pdf_data = pdf_res.json()
-    assert "pdf_url" in pdf_data
+    assert "download_url" in pdf_data
     assert pdf_data["page_count"] >= 1

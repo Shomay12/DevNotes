@@ -8,8 +8,10 @@ from devnote.app.services.pdf_service import PDFService
 from devnote.app.models.notebook import Notebook
 
 router = APIRouter(prefix="/api/notebooks", tags=["pdf"])
+pdf_compat_router = APIRouter(prefix="/api/pdf", tags=["pdf"])
 
 @router.post("/{notebook_id}/export", response_model=PDFExportResponse)
+@pdf_compat_router.post("/export/{notebook_id}", response_model=PDFExportResponse)
 def export_notebook(notebook_id: str, db: Session = Depends(get_db)):
     try:
         result = PDFService.export_notebook_to_pdf(db, notebook_id)

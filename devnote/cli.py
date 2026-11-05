@@ -18,6 +18,10 @@ import webbrowser
 from pathlib import Path
 from typing import Optional
 
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
 from devnote.paths import (
     get_user_data_dir,
     get_user_config_dir,
@@ -86,6 +90,9 @@ def get_active_storage_dir(args_dir: Optional[str] = None) -> Path:
         except Exception:
             pass
 
+    dev_storage = Path(__file__).resolve().parent.parent / "storage"
+    if dev_storage.exists():
+        return dev_storage
     return get_user_data_dir()
 
 

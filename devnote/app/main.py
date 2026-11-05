@@ -24,6 +24,7 @@ from devnote.app.routers import (
     notebooks_router,
     execution_router,
     pdf_router,
+    pdf_compat_router,
     search_router,
     snippets_router,
 )
@@ -136,6 +137,7 @@ async def network_security_auth_middleware(request: Request, call_next):
 app.include_router(notebooks_router)
 app.include_router(execution_router)
 app.include_router(pdf_router)
+app.include_router(pdf_compat_router)
 app.include_router(search_router)
 app.include_router(snippets_router)
 

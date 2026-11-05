@@ -7,7 +7,7 @@
   <a href="https://fastapi.tiangolo.com"><img src="https://img.shields.io/badge/FastAPI-0.110%2B-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/></a>
   <a href="https://www.sqlite.org"><img src="https://img.shields.io/badge/SQLite-WAL%20Mode-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite WAL"/></a>
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img src="https://img.shields.io/badge/Vanilla_JS-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="Vanilla JS"/></a>
-  <a href="#-running-automated-tests"><img src="https://img.shields.io/badge/Tests-23%20Passing%20(100%25)-10b981?style=for-the-badge&logo=pytest&logoColor=white" alt="Pytest 100% Passing"/></a>
+  <a href="#-running-automated-tests"><img src="https://img.shields.io/badge/Tests-38%20Passing%20(100%25)-10b981?style=for-the-badge&logo=pytest&logoColor=white" alt="Pytest 100% Passing"/></a>
   <a href="#license"><img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License"/></a>
 </p>
 
@@ -208,13 +208,32 @@ print(f"Time of Flight: {tof:.2f}s | Max Height: {hmax:.2f}m")
 - **Error Panel**: Captures tracebacks (`stderr`) in a dedicated red error box.
 - **Stop Button**: Halts long-running loops or timeouts immediately.
 
-### 3. Developer Search Workspace (50% Split Screen)
-Click **Search** or press <kbd>Cmd</kbd> + <kbd>K</kbd> to activate the side-by-side search panel:
-- Search **Concepts** (Decorators, Async/Await, Closures, Generators).
-- Search **Error Fixes** (`TypeError: 'NoneType' object is not subscriptable`, `IndexError`, etc.).
-- Search **Code Examples** (QuickSort, Debounce, Binary Search).
-- **1-Click Ingestion**: Click **+ Insert into Notebook** on any search result to append it directly into your notes without overwriting existing content.
-- **Draggable Divider**: Grab the vertical divider to adjust panel proportions dynamically.
+### 3. DevSearch — Unified Developer Search Engine (50% Split Screen)
+Click **Search** in the sidebar or press <kbd>Cmd</kbd> + <kbd>K</kbd> to activate the unified search panel:
+- **Multi-Provider Unified Search**:
+  - **Official Documentation**: Searches Python 3, MDN Web Docs, FastAPI, Docker, PostgreSQL, Git, Flutter, and DevDocs.
+  - **Stack Overflow**: Real-time programming discussions, debugging error fixes, and accepted answers via official Stack Exchange API with attribution.
+  - **GitHub Search**: Open-source repositories, stars, licenses, and implementations via GitHub REST API.
+  - **Local Offline Documentation (SQLite FTS5)**: Full-text search across downloaded doc indexes completely offline with zero internet access.
+  - **Google Custom Search**: Optional Google Programmable Search integration without web scraping.
+  - **Workspace Notebooks**: Search across your own notes, blocks, and code snippets.
+- **Deterministic Query Classification & Intelligent Routing**:
+  - Automatically identifies query intent (**Error Troubleshooting**, **Documentation / Concept**, **Code Implementation**, **API Reference**, **Technical Research**).
+  - Detects programming language (**Python, JavaScript, Rust, Go, Java, C++, SQL, Dart**) and framework (**FastAPI, Django, React, Node.js, Docker, Git, PyTorch**).
+  - Routes queries to the highest-scoring providers and applies multi-dimensional BM25 + intent ranking.
+- **Dynamic Filters**:
+  - Filter by Category: `All Sources`, `Official Docs`, `Code Examples`, `Stack Overflow`, `GitHub`, `Offline (FTS5)`, `Notebooks`.
+  - Filter by Language and Framework.
+- **1-Click Notebook Ingestion (Zero Overwrite Guarantee)**:
+  - **+ Ref**: Appends section heading, summary, and clickable source reference URL.
+  - **+ Code**: Appends an executable Python or JavaScript code cell ready to run.
+  - **👁 Preview**: Opens an integrated slide-in drawer to read full documentation and code before inserting.
+  - **🔖 Bookmark**: Saves to DevSearch saved resources collection.
+- **Search History & Offline Docs Manager**:
+  - Persistent local search history with 1-click re-run and purge options.
+  - Manage downloaded documentation packs (Python, FastAPI, JavaScript, Docker, Git) with live storage statistics.
+- **Draggable Divider & Fullscreen Toggle**:
+  - Grab the vertical split divider to adjust panel proportions, or click the maximize button to expand DevSearch to 100% width.
 
 ### 4. Apple Pencil & Stylus Handwriting
 Integrated canvas block powered by the HTML5 Canvas & Pointer Events API:
@@ -309,40 +328,55 @@ The container automatically mounts `./storage` to persist your notebooks, SQLite
 
 ## 🧪 Running Automated Tests
 
-DevNote includes a complete test suite covering notebooks, code execution, sandbox timeouts, PDF round-trips, search, snippet library, and the full end-to-end 16-step user workflow:
+DevNote and DevSearch include a complete test suite covering notebooks, code execution, sandbox timeouts, PDF round-trips, search query classification, ranking, SQLite FTS5 offline docs, snippet library, and the full end-to-end 18-step user acceptance workflow:
 
 ```bash
-# Run complete test suite (23 tests)
+# Run complete test suite (38 tests)
 source venv/bin/activate
 PYTHONPATH=. pytest backend/tests -v
 ```
 
 ```
 ============================= test session starts ==============================
-backend/tests/test_cli_and_distribution.py::test_api_config_endpoint PASSED [  4%]
-backend/tests/test_cli_and_distribution.py::test_json_export_and_import_endpoints PASSED [  8%]
-backend/tests/test_storage_provider_abstraction PASSED [ 13%]
-backend/tests/test_execution_provider_abstraction PASSED [ 17%]
-backend/tests/test_network_security_middleware PASSED [ 21%]
-backend/tests/test_cli_and_distribution.py::test_cli_execution_commands PASSED [ 26%]
-backend/tests/test_e2e_workflow.py::test_full_devnote_acceptance_workflow PASSED [ 30%]
-backend/tests/test_execution.py::test_execute_python_success PASSED      [ 34%]
-backend/tests/test_execution.py::test_execute_javascript_success PASSED  [ 39%]
-backend/tests/test_execution.py::test_execute_python_error PASSED        [ 43%]
-backend/tests/test_execution.py::test_execute_timeout PASSED             [ 47%]
-backend/tests/test_execution.py::test_execute_updates_notebook_block PASSED [ 52%]
-backend/tests/test_notebooks.py::test_health PASSED                      [ 56%]
-backend/tests/test_notebooks.py::test_create_and_get_notebook PASSED     [ 60%]
-backend/tests/test_notebooks.py::test_autosave_content PASSED            [ 65%]
-backend/tests/test_notebooks.py::test_update_notebook_metadata PASSED    [ 69%]
-backend/tests/test_notebooks.py::test_delete_notebook PASSED             [ 73%]
-backend/tests/test_pdf.py::test_pdf_export_and_roundtrip_import PASSED   [ 78%]
-backend/tests/test_search.py::test_search_concepts PASSED                [ 82%]
-backend/tests/test_search.py::test_search_error_messages PASSED          [ 86%]
-backend/tests/test_search.py::test_search_notebooks_content PASSED       [ 91%]
-backend/tests/test_search.py::test_web_search_endpoint PASSED            [ 95%]
+backend/tests/test_cli_and_distribution.py::test_api_config_endpoint PASSED [  2%]
+backend/tests/test_cli_and_distribution.py::test_json_export_and_import_endpoints PASSED [  5%]
+backend/tests/test_cli_and_distribution.py::test_storage_provider_abstraction PASSED [  7%]
+backend/tests/test_cli_and_distribution.py::test_execution_provider_abstraction PASSED [ 10%]
+backend/tests/test_cli_and_distribution.py::test_network_security_middleware PASSED [ 13%]
+backend/tests/test_cli_and_distribution.py::test_cli_execution_commands PASSED [ 15%]
+backend/tests/test_devsearch.py::test_query_classifier_concept PASSED    [ 18%]
+backend/tests/test_devsearch.py::test_query_classifier_error PASSED      [ 21%]
+backend/tests/test_devsearch.py::test_query_classifier_code_implementation PASSED [ 23%]
+backend/tests/test_devsearch.py::test_query_classifier_javascript PASSED [ 26%]
+backend/tests/test_devsearch.py::test_result_deduplicator PASSED         [ 28%]
+backend/tests/test_devsearch.py::test_ranking_engine_error_boost PASSED  [ 31%]
+backend/tests/test_devsearch.py::test_search_cache PASSED                [ 34%]
+backend/tests/test_devsearch.py::test_api_unified_search_post PASSED     [ 36%]
+backend/tests/test_devsearch.py::test_api_search_providers_list PASSED   [ 39%]
+backend/tests/test_devsearch.py::test_api_search_history_lifecycle PASSED [ 42%]
+backend/tests/test_devsearch.py::test_api_offline_docs_search PASSED     [ 44%]
+backend/tests/test_devsearch.py::test_api_doc_indexes_management PASSED  [ 47%]
+backend/tests/test_devsearch.py::test_api_saved_resources_crud PASSED    [ 50%]
+backend/tests/test_devsearch.py::test_api_search_settings PASSED         [ 52%]
+backend/tests/test_devsearch_e2e.py::test_devsearch_full_acceptance_workflow PASSED [ 55%]
+backend/tests/test_e2e_workflow.py::test_full_devnote_acceptance_workflow PASSED [ 57%]
+backend/tests/test_execution.py::test_execute_python_success PASSED      [ 60%]
+backend/tests/test_execution.py::test_execute_javascript_success PASSED  [ 63%]
+backend/tests/test_execution.py::test_execute_python_error PASSED        [ 65%]
+backend/tests/test_execution.py::test_execute_timeout PASSED             [ 68%]
+backend/tests/test_execution.py::test_execute_updates_notebook_block PASSED [ 71%]
+backend/tests/test_notebooks.py::test_health PASSED                      [ 73%]
+backend/tests/test_notebooks.py::test_create_and_get_notebook PASSED     [ 76%]
+backend/tests/test_notebooks.py::test_autosave_content PASSED            [ 78%]
+backend/tests/test_notebooks.py::test_update_notebook_metadata PASSED    [ 81%]
+backend/tests/test_notebooks.py::test_delete_notebook PASSED             [ 83%]
+backend/tests/test_pdf.py::test_pdf_export_and_roundtrip_import PASSED   [ 86%]
+backend/tests/test_search.py::test_search_concepts PASSED                [ 89%]
+backend/tests/test_search.py::test_search_error_messages PASSED          [ 92%]
+backend/tests/test_search.py::test_search_notebooks_content PASSED       [ 94%]
+backend/tests/test_search.py::test_web_search_endpoint PASSED            [ 97%]
 backend/tests/test_snippets.py::test_snippet_crud PASSED                 [100%]
-======================== 23 passed in 2.30s ========================
+======================= 38 passed in 8.17s ========================
 ```
 
 ---

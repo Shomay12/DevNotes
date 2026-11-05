@@ -1,0 +1,6 @@
+include README.md
+include LICENSE
+recursive-include devnote/frontend *
+recursive-include devnote/frontend/css *
+recursive-include devnote/frontend/js *
+recursive-include devnote/frontend/assets *

@@ -90,6 +90,11 @@ def get_active_storage_dir(args_dir: Optional[str] = None) -> Path:
         except Exception:
             pass
 
+    # If local workspace storage directory exists and is writable, use it
+    local_storage = Path.cwd() / "storage"
+    if local_storage.exists():
+        return local_storage.resolve()
+
     return get_user_data_dir()
 
 
@@ -239,13 +244,15 @@ def cmd_start(args):
     if args.daemon:
         # Run in daemon/background mode
         log_file = get_log_file(target_data_dir)
-        with open(log_file, "a") as f_out:
-            proc = subprocess.Popen(
-                [sys.executable, "-m", "uvicorn", "devnote.app.main:app", "--host", host, "--port", str(port)],
-                env=env,
-                stdout=f_out,
-                stderr=subprocess.STDOUT
-            )
+        f_out = open(log_file, "a", encoding="utf-8")
+        proc = subprocess.Popen(
+            [sys.executable, "-m", "uvicorn", "devnote.app.main:app", "--host", host, "--port", str(port)],
+            env=env,
+            stdin=subprocess.DEVNULL,
+            stdout=f_out,
+            stderr=subprocess.STDOUT,
+            start_new_session=True
+        )
         write_pid(proc.pid, host, port, auth_token, target_data_dir)
         print(f"✓ DevNote running in background (PID: {proc.pid})")
         print(f"  Logs: {log_file}")

@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import patch, AsyncMock
 from fastapi.testclient import TestClient
 from devnote.app.main import app
 from devnote.app.research.url_validator import validate_url_safety
@@ -129,3 +130,60 @@ def test_api_check_frame_endpoint():
     res_gh = client.get("/api/research/check-frame", params={"url": "https://github.com/numpy/numpy"})
     assert res_gh.status_code == 200
     assert res_gh.json()["allows_framing"] is False
+
+
+def test_api_research_read_empty_url():
+    res = client.get("/api/research/read", params={"url": ""})
+    assert res.status_code == 400
+
+
+def test_api_research_read_github_mocked():
+    mock_meta = {
+        "full_name": "example/project",
+        "description": "An example project",
+        "stargazers_count": 420,
+        "forks_count": 69,
+        "language": "Python",
+        "default_branch": "main",
+        "html_url": "https://github.com/example/project"
+    }
+    readme_html = "<h1>Example</h1><p>Welcome to example project</p><pre><code class=\"language-python\">print('hello')</code></pre>"
+
+    with patch("devnote.app.research.providers.github_provider.GitHubReaderProvider._fetch_repo_metadata", new_callable=AsyncMock) as mock_repo_meta, \
+         patch("devnote.app.research.providers.github_provider.GitHubReaderProvider._fetch_readme", new_callable=AsyncMock) as mock_fetch_readme:
+        mock_repo_meta.return_value = mock_meta
+        mock_fetch_readme.return_value = (readme_html, "# Example\nprint('hello')")
+
+        res = client.get("/api/research/read", params={"url": "https://github.com/example/project"})
+        assert res.status_code == 200
+        data = res.json()
+        assert data["status"] == "success"
+        assert data["reading_strategy"] == "official_api"
+        assert "example/project" in data["title"]
+        assert len(data["code_snippets"]) >= 1
+        assert data["code_snippets"][0]["language"] == "python"
+        assert "print('hello')" in data["code_snippets"][0]["code"]
+        assert data["metadata"]["stars"] == 420
+
+
+def test_api_research_read_caching():
+    mock_meta = {
+        "full_name": "example/cached",
+        "description": "Cached repo",
+        "default_branch": "main"
+    }
+    with patch("devnote.app.research.providers.github_provider.GitHubReaderProvider._fetch_repo_metadata", new_callable=AsyncMock) as mock_repo_meta, \
+         patch("devnote.app.research.providers.github_provider.GitHubReaderProvider._fetch_readme", new_callable=AsyncMock) as mock_fetch_readme:
+        mock_repo_meta.return_value = mock_meta
+        mock_fetch_readme.return_value = ("<p>Cached content</p>", "Cached content")
+
+        # 1st call
+        res1 = client.get("/api/research/read", params={"url": "https://github.com/example/cached"})
+        assert res1.status_code == 200
+        assert mock_repo_meta.call_count == 1
+
+        # 2nd call (should hit cache)
+        res2 = client.get("/api/research/read", params={"url": "https://github.com/example/cached"})
+        assert res2.status_code == 200
+        assert res2.json()["metadata"].get("cached") is True
+        assert mock_repo_meta.call_count == 1

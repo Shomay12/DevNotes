@@ -23,6 +23,17 @@ devnote/app/models/notebook.py
 devnote/app/models/saved_resource.py
 devnote/app/models/search_history.py
 devnote/app/models/snippet.py
+devnote/app/research/__init__.py
+devnote/app/research/content_sanitizer.py
+devnote/app/research/reader_router.py
+devnote/app/research/reader_service.py
+devnote/app/research/source_detector.py
+devnote/app/research/url_validator.py
+devnote/app/research/providers/__init__.py
+devnote/app/research/providers/article_provider.py
+devnote/app/research/providers/base_provider.py
+devnote/app/research/providers/documentation_provider.py
+devnote/app/research/providers/github_provider.py
 devnote/app/routers/__init__.py
 devnote/app/routers/execution.py
 devnote/app/routers/notebooks.py
@@ -50,6 +61,7 @@ devnote/app/search/providers/github_provider.py
 devnote/app/search/providers/google_provider.py
 devnote/app/search/providers/local_docs_provider.py
 devnote/app/search/providers/notebooks_provider.py
+devnote/app/search/providers/searxng_provider.py
 devnote/app/search/providers/stackoverflow_provider.py
 devnote/app/services/autosave_service.py
 devnote/app/services/execution_provider.py
@@ -65,6 +77,7 @@ devnote/frontend/assets/devnote-banner.svg
 devnote/frontend/assets/roundtrip-workflow.svg
 devnote/frontend/css/editor.css
 devnote/frontend/css/main.css
+devnote/frontend/css/reader.css
 devnote/frontend/css/responsive.css
 devnote/frontend/css/sidebar.css
 devnote/frontend/js/api.js

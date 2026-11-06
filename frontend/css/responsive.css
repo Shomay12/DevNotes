@@ -876,14 +876,20 @@
     width: 280px;
     transform: translateX(-100%);
     box-shadow: var(--shadow-xl);
+    z-index: 50;
   }
 
   #app-sidebar.mobile-open {
     transform: translateX(0);
+    display: flex !important;
+  }
+
+  #app-sidebar.collapsed {
+    display: none !important;
   }
 
   .split-resizer {
-    display: none;
+    display: none !important;
   }
 
   #developer-search-panel {
@@ -894,6 +900,11 @@
     width: 100vw;
     max-width: 100vw;
     box-shadow: var(--shadow-xl);
+    z-index: 40;
+  }
+
+  #developer-search-panel.collapsed {
+    display: none !important;
   }
 
   .editor-scroll-area {

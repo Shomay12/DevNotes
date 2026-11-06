@@ -51,7 +51,6 @@ class CodeBlockComponent {
             <option value="javascript" ${this.data.language === "javascript" ? "selected" : ""}>JavaScript</option>
           </select>
           <div class="code-status-pill ${statusClass}">
-            <span class="status-dot ${isRunning ? "saving" : ""}"></span>
             <span class="status-label">${statusText}</span>
           </div>
         </div>
@@ -160,7 +159,9 @@ class CodeBlockComponent {
   setStatus(status, message = null) {
     this.data.status = status;
     this.statusPill.className = `code-status-pill ${status}`;
-    this.statusDot.className = `status-dot ${status === "running" ? "saving" : ""}`;
+    if (this.statusDot) {
+      this.statusDot.className = `status-dot ${status === "running" ? "saving" : ""}`;
+    }
 
     if (message) {
       this.statusLabel.textContent = message;

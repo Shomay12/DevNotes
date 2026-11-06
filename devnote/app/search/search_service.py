@@ -21,6 +21,9 @@ from devnote.app.search.providers.google_provider import GoogleProvider
 from devnote.app.search.providers.searxng_provider import SearXNGProvider
 from devnote.app.search.providers.local_docs_provider import LocalDocsProvider
 from devnote.app.search.providers.notebooks_provider import NotebooksSearchProvider
+from devnote.app.search.providers.wikipedia_provider import WikipediaProvider
+from devnote.app.search.providers.hackernews_provider import HackerNewsProvider
+from devnote.app.search.providers.general_search_provider import GeneralSearchProvider
 
 class UnifiedSearchService:
     def __init__(self):
@@ -30,6 +33,9 @@ class UnifiedSearchService:
             "github": GitHubProvider(),
             "google": GoogleProvider(),
             "searxng": SearXNGProvider(),
+            "general": GeneralSearchProvider(),
+            "wikipedia": WikipediaProvider(),
+            "hackernews": HackerNewsProvider(),
             "local_docs": LocalDocsProvider(),
             "notebooks": NotebooksSearchProvider(),
         }
@@ -87,26 +93,46 @@ class UnifiedSearchService:
         if prov and prov in self.providers:
             target_providers = [self.providers[prov]]
         elif cat in ("web", "general", "it", "science"):
-            target_providers = [self.providers["searxng"], self.providers["devdocs"]]
+            # Comprehensive General Search: All sources appear together rather than just a specific one
+            target_providers = [
+                self.providers["general"],
+                self.providers["devdocs"],
+                self.providers["stackoverflow"],
+                self.providers["github"],
+                self.providers["wikipedia"],
+                self.providers["local_docs"]
+            ]
+            if getattr(self.providers["searxng"], "endpoint", None):
+                target_providers.insert(0, self.providers["searxng"])
+        elif cat in ("wikipedia", "wiki"):
+            target_providers = [self.providers["wikipedia"], self.providers["general"]]
+        elif cat in ("hackernews", "news"):
+            target_providers = [self.providers["hackernews"], self.providers["general"]]
         elif cat == "doc":
-            target_providers = [self.providers["devdocs"], self.providers["local_docs"], self.providers["searxng"]]
+            target_providers = [self.providers["devdocs"], self.providers["local_docs"], self.providers["wikipedia"], self.providers["general"]]
         elif cat in ("stackoverflow", "error"):
-            target_providers = [self.providers["stackoverflow"], self.providers["github"], self.providers["searxng"]]
+            target_providers = [self.providers["stackoverflow"], self.providers["github"], self.providers["general"]]
         elif cat == "github":
-            target_providers = [self.providers["github"]]
+            target_providers = [self.providers["github"], self.providers["general"]]
         elif cat == "code":
-            target_providers = [self.providers["github"], self.providers["devdocs"], self.providers["notebooks"], self.providers["searxng"]]
+            target_providers = [self.providers["github"], self.providers["devdocs"], self.providers["notebooks"], self.providers["stackoverflow"]]
         elif cat == "offline":
             target_providers = [self.providers["local_docs"]]
         elif cat == "notebook":
             target_providers = [self.providers["notebooks"]]
         else:
-            # "all": Use recommended providers from classification plus local docs, notebooks, and searxng
-            active_keys = set(classification.recommended_providers)
-            active_keys.add("local_docs")
-            active_keys.add("notebooks")
-            active_keys.add("searxng")
-            target_providers = [p for k, p in self.providers.items() if k in active_keys]
+            # "all": All results appear across general web, official docs, stackoverflow, github, wikipedia, local docs, and notebooks
+            target_providers = [
+                self.providers["general"],
+                self.providers["devdocs"],
+                self.providers["stackoverflow"],
+                self.providers["github"],
+                self.providers["wikipedia"],
+                self.providers["local_docs"],
+                self.providers["notebooks"]
+            ]
+            if getattr(self.providers["searxng"], "endpoint", None):
+                target_providers.insert(0, self.providers["searxng"])
 
         # 4. Asynchronously query targeted providers in parallel
         filters = {

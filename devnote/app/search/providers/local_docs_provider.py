@@ -208,7 +208,7 @@ class LocalDocsProvider(BaseSearchProvider):
                             status=pack["status"],
                             entry_count=len(pack["entries"]),
                             size_bytes=len(str(pack["entries"])),
-                            downloaded_at=datetime.datetime.utcnow(),
+                            downloaded_at=datetime.datetime.now(datetime.timezone.utc),
                             url=f"local://{pack['id']}"
                         )
                         db.add(doc_idx)

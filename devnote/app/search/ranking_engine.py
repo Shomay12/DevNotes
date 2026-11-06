@@ -31,6 +31,7 @@ class RankingEngine:
             t_lower = item.title.lower()
             s_lower = item.snippet.lower()
             c_lower = (item.code or "").lower()
+            cat = item.category.lower()
 
             # 1. Exact Phrase Match
             if q_raw and q_raw in t_lower:
@@ -38,26 +39,29 @@ class RankingEngine:
             elif q_raw and q_raw in s_lower:
                 score += 35.0
 
-            # 2. Token overlap in title (weight: 15 per token)
+            # 2. Token overlap in title (weight: 30 per token in title)
             for tok in q_tokens:
                 if tok in t_lower:
-                    score += 20.0
+                    score += 35.0
                 elif tok in s_lower:
-                    score += 8.0
+                    score += 10.0
                 elif tok in c_lower:
                     score += 5.0
 
-            # 3. Intent alignment boost
-            intent = classification.intent
-            cat = item.category.lower()
+            # 3. User category selection boost
+            if user_category and user_category != "all":
+                if cat == user_category.lower():
+                    score += 50.0
 
+            # 4. Intent alignment boost
+            intent = classification.intent
             if intent == "error":
                 if cat in ("stackoverflow", "error"):
                     score += 45.0
                 elif "github" in cat:
                     score += 20.0
             elif intent in ("concept", "api"):
-                if cat in ("doc", "concept", "offline"):
+                if cat in ("doc", "concept", "offline", "wikipedia", "general"):
                     score += 45.0
             elif intent == "code":
                 if item.code:

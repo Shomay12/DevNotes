@@ -1,8 +1,10 @@
 from typing import List, Optional, Dict, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 
 class BlockSchema(BaseModel):
+    model_config = ConfigDict(extra="allow")
+
     id: str
     type: str  # heading, paragraph, code, drawing, math, table, checklist, image
     content: Optional[str] = ""
@@ -18,9 +20,6 @@ class BlockSchema(BaseModel):
     checked: Optional[bool] = False
     rows: Optional[List[List[str]]] = None
     metadata: Optional[Dict[str, Any]] = None
-
-    class Config:
-        extra = "allow"
 
 class NotebookCreate(BaseModel):
     title: Optional[str] = "Untitled Notebook"

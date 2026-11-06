@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, Integer, DateTime
 from devnote.app.database import Base
 
@@ -13,7 +13,7 @@ class SearchHistory(Base):
     framework = Column(String(50), nullable=True)
     provider = Column(String(50), nullable=True)
     results_count = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     def to_dict(self):
         return {

@@ -27,6 +27,8 @@ from devnote.app.routers import (
     pdf_compat_router,
     search_router,
     snippets_router,
+    news_router,
+    llm_router,
 )
 from devnote.app.research import reader_router
 
@@ -142,6 +144,8 @@ app.include_router(pdf_compat_router)
 app.include_router(search_router)
 app.include_router(snippets_router)
 app.include_router(reader_router)
+app.include_router(news_router)
+app.include_router(llm_router)
 
 # Mount static frontend directories
 css_dir = FRONTEND_DIR / "css"

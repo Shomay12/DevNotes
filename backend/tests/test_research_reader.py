@@ -187,3 +187,28 @@ def test_api_research_read_caching():
         assert res2.status_code == 200
         assert res2.json()["metadata"].get("cached") is True
         assert mock_repo_meta.call_count == 1
+
+
+def test_api_research_read_stackoverflow_success():
+    # Verify Stack Overflow URL no longer returns 403 or restriction, but extracts clean Q&A
+    url = "https://stackoverflow.com/questions/1987694/how-do-i-print-the-full-numpy-array-without-truncation"
+    res = client.get("/api/research/read", params={"url": url})
+    assert res.status_code == 200
+    data = res.json()
+    assert data["status"] == "success"
+    assert data["reading_strategy"] == "official_api"
+    assert "numpy" in data["title"].lower()
+    assert "set_printoptions" in data["content_html"] or "numpy" in data["raw_text"].lower()
+    assert len(data["code_snippets"]) >= 1
+
+
+def test_api_research_read_wikipedia_success():
+    # Verify Wikipedia reference extracts clean encyclopedia content
+    url = "https://en.wikipedia.org/wiki/NumPy"
+    res = client.get("/api/research/read", params={"url": url})
+    assert res.status_code == 200
+    data = res.json()
+    assert data["status"] == "success"
+    assert data["reading_strategy"] == "official_api"
+    assert "NumPy" in data["title"]
+    assert "array" in data["raw_text"].lower()

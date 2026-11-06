@@ -12,13 +12,24 @@
   flex-shrink: 0;
   user-select: none;
   z-index: 30;
-  transition: transform var(--transition-normal), width var(--transition-normal);
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#app-sidebar.collapsed {
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  overflow: hidden !important;
 }
 
 /* Sidebar Brand Header */
 .sidebar-header {
   height: var(--header-height);
-  padding: 0 16px;
+  padding: 0 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -30,6 +41,26 @@
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.btn-sidebar-collapse {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-sidebar-collapse:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
 }
 
 .brand-icon {

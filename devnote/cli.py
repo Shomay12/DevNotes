@@ -170,7 +170,7 @@ def cmd_init(args):
 
     db_path = target_data_dir / "devnote.db"
     print("=" * 65)
-    print("✨ DevNote initialized successfully!")
+    print("DevNote initialized successfully.")
     print(f"   Config path:  {config_file}")
     print(f"   Storage path: {target_data_dir}")
     print(f"   Database:     {db_path}")
@@ -229,7 +229,7 @@ def cmd_start(args):
     db_path = target_data_dir / "devnote.db"
 
     print("=" * 65)
-    print(f"🚀 DevNote {CLI_VERSION} ({edition.capitalize()} Edition)")
+    print(f"DevNote {CLI_VERSION} ({edition.capitalize()} Edition)")
     print("=" * 65)
     print(f"   Local URL:    http://127.0.0.1:{port}")
     print(f"   Storage path: {target_data_dir}")
@@ -237,7 +237,7 @@ def cmd_start(args):
     if is_network:
         print(f"   iPad / LAN:   {network_url}")
         print(f"   Access Token: {auth_token}")
-        print("   🔒 Network Access Protected by Token Authentication")
+        print("   Network Access Protected by Token Authentication")
     print("   Press CTRL+C to stop server")
     print("=" * 65)
 
@@ -460,7 +460,7 @@ def cmd_import(args):
 def cmd_doctor(args):
     """Checks system environment, dependencies, sandbox, and network capabilities."""
     print("=" * 65)
-    print(f"🩺 DevNote Environment Doctor ({platform.system()} {platform.machine()})")
+    print(f"DevNote Environment Doctor ({platform.system()} {platform.machine()})")
     print("=" * 65)
 
     all_good = True

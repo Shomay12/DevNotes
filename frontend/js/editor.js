@@ -30,32 +30,21 @@ class NotebookEditor {
     this.container.innerHTML = `
       <div class="editor-top-bar">
         <div class="editor-title-container">
+          <button type="button" class="btn btn-sidebar-toggle" id="btn-sidebar-toggle" title="Toggle Sidebar (Cmd+B)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+          </button>
           <input type="text" class="notebook-title-input" placeholder="Untitled Notebook" value="" />
           <div class="save-status-indicator">
-            <span class="status-dot"></span>
-            <span class="save-status-text">All changes saved</span>
+            <span class="save-status-text">Saved</span>
           </div>
         </div>
         <div class="editor-actions-group">
-          <!-- View Modes -->
-          <button type="button" class="btn btn-sm btn-mode-toggle active" data-mode="all" title="All Blocks">All</button>
-          <button type="button" class="btn btn-sm btn-mode-toggle" data-mode="code" title="Code Only">Code</button>
-          <button type="button" class="btn btn-sm btn-mode-toggle" data-mode="drawing" title="Handwriting">Draw</button>
-          <div style="width: 1px; height: 18px; background: var(--border-subtle); margin: 0 4px;"></div>
           <!-- Action Buttons -->
           <button type="button" class="btn btn-sm btn-toggle-search" title="Developer Search (Cmd+K)">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             Search
           </button>
-          <button type="button" class="btn btn-sm btn-snippets-modal" title="Insert Snippet">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-            Snippets
-          </button>
-          <button type="button" class="btn btn-sm btn-export-json" title="Export Canonical JSON Notebook">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-            JSON
-          </button>
-          <button type="button" class="btn btn-sm btn-primary btn-open-export" title="Export as PDF">
+          <button type="button" class="btn btn-sm btn-primary btn-open-export" title="Export PDF">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
             Export PDF
           </button>
@@ -65,9 +54,8 @@ class NotebookEditor {
         <div class="editor-document">
           <div class="document-meta-header">
             <div class="document-tags-bar">
-              <span style="font-size: 11px; font-weight: 600; color: var(--text-muted);">Tags:</span>
               <div class="tags-list" style="display: flex; gap: 4px; align-items: center;"></div>
-              <button type="button" class="btn-add-tag">+ Add Tag</button>
+              <button type="button" class="btn-add-tag">+ Tag</button>
             </div>
             <div style="font-size: 11px; color: var(--text-muted);" class="doc-last-edited"></div>
           </div>
@@ -79,14 +67,14 @@ class NotebookEditor {
         <div class="slash-palette-header">Insert Component</div>
         <div class="slash-item-list">
           <div class="slash-item" data-type="code" data-lang="python">
-            <div class="slash-item-icon">py</div>
+            <div class="slash-item-icon">PY</div>
             <div class="slash-item-details">
               <span class="slash-item-title">Python Code Block</span>
               <span class="slash-item-desc">Executable Python 3 with terminal output</span>
             </div>
           </div>
           <div class="slash-item" data-type="code" data-lang="javascript">
-            <div class="slash-item-icon">js</div>
+            <div class="slash-item-icon">JS</div>
             <div class="slash-item-details">
               <span class="slash-item-title">JavaScript Code Block</span>
               <span class="slash-item-desc">Executable Node.js script</span>
@@ -107,14 +95,18 @@ class NotebookEditor {
             </div>
           </div>
           <div class="slash-item" data-type="drawing">
-            <div class="slash-item-icon">✎</div>
+            <div class="slash-item-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+            </div>
             <div class="slash-item-details">
               <span class="slash-item-title">Handwritten Canvas</span>
-              <span class="slash-item-desc">Apple Pencil and stylus drawing canvas</span>
+              <span class="slash-item-desc">Stylus &amp; Pencil sketch block</span>
             </div>
           </div>
           <div class="slash-item" data-type="checklist">
-            <div class="slash-item-icon">☑</div>
+            <div class="slash-item-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            </div>
             <div class="slash-item-details">
               <span class="slash-item-title">Checklist</span>
               <span class="slash-item-desc">Interactive todo checkbox item</span>
@@ -123,15 +115,17 @@ class NotebookEditor {
           <div class="slash-item" data-type="math">
             <div class="slash-item-icon">∑</div>
             <div class="slash-item-details">
-              <span class="slash-item-title">Math Equation</span>
-              <span class="slash-item-desc">Mathematical formula block</span>
+              <span class="slash-item-title">Math Formula</span>
+              <span class="slash-item-desc">Formula and equation block</span>
             </div>
           </div>
           <div class="slash-item" data-type="table">
-            <div class="slash-item-icon">⊞</div>
+            <div class="slash-item-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+            </div>
             <div class="slash-item-details">
               <span class="slash-item-title">Table</span>
-              <span class="slash-item-desc">Data table with rows & columns</span>
+              <span class="slash-item-desc">Structured rows &amp; columns</span>
             </div>
           </div>
         </div>
@@ -139,13 +133,22 @@ class NotebookEditor {
     `;
 
     this.titleInput = this.container.querySelector(".notebook-title-input");
-    this.statusDot = this.container.querySelector(".status-dot");
     this.statusText = this.container.querySelector(".save-status-text");
     this.blocksContainer = this.container.querySelector(".document-blocks-container");
     this.tagsList = this.container.querySelector(".tags-list");
     this.btnAddTag = this.container.querySelector(".btn-add-tag");
     this.lastEditedLabel = this.container.querySelector(".doc-last-edited");
     this.slashPalette = this.container.querySelector(".slash-command-palette");
+
+    // Sidebar Toggle
+    const sidebarToggleBtn = this.container.querySelector("#btn-sidebar-toggle");
+    if (sidebarToggleBtn) {
+      sidebarToggleBtn.addEventListener("click", () => {
+        if (this.app && typeof this.app.toggleSidebar === "function") {
+          this.app.toggleSidebar();
+        }
+      });
+    }
 
     // Title editing triggers debounced autosave
     this.titleInput.addEventListener("input", () => {
@@ -170,23 +173,35 @@ class NotebookEditor {
     });
 
     // Header Action Buttons
-    this.container.querySelector(".btn-toggle-search").addEventListener("click", () => {
-      this.app.searchWorkspace.toggleCollapse();
-    });
+    const searchToggleBtn = this.container.querySelector(".btn-toggle-search");
+    if (searchToggleBtn) {
+      searchToggleBtn.addEventListener("click", () => {
+        this.app.searchWorkspace.toggleCollapse();
+      });
+    }
 
-    this.container.querySelector(".btn-snippets-modal").addEventListener("click", () => {
-      this.app.openSnippetsModal();
-    });
+    const snippetsBtn = this.container.querySelector(".btn-snippets-modal");
+    if (snippetsBtn) {
+      snippetsBtn.addEventListener("click", () => {
+        this.app.openSnippetsModal();
+      });
+    }
 
-    this.container.querySelector(".btn-export-json").addEventListener("click", () => {
-      this.app.exportCurrentNotebookJSON();
-    });
+    const exportJsonBtn = this.container.querySelector(".btn-export-json");
+    if (exportJsonBtn) {
+      exportJsonBtn.addEventListener("click", () => {
+        this.app.exportCurrentNotebookJSON();
+      });
+    }
 
-    this.container.querySelector(".btn-open-export").addEventListener("click", () => {
-      this.app.pdfManager.openExportModal();
-    });
+    const openExportBtn = this.container.querySelector(".btn-open-export");
+    if (openExportBtn) {
+      openExportBtn.addEventListener("click", () => {
+        this.app.pdfManager.openExportModal();
+      });
+    }
 
-    // View Mode Filters
+    // View Mode Filters (if present)
     const modeBtns = this.container.querySelectorAll(".btn-mode-toggle");
     modeBtns.forEach(btn => {
       btn.addEventListener("click", () => {
@@ -241,6 +256,13 @@ class NotebookEditor {
       else if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         this.app.searchWorkspace.toggleCollapse();
+      }
+      // Cmd/Ctrl + B or \ -> Toggle Left Sidebar
+      else if ((e.metaKey || e.ctrlKey) && (e.key === "b" || e.key === "B" || e.key === "\\")) {
+        e.preventDefault();
+        if (this.app && typeof this.app.toggleSidebar === "function") {
+          this.app.toggleSidebar();
+        }
       }
     });
   }
@@ -338,10 +360,18 @@ class NotebookEditor {
     const controls = document.createElement("div");
     controls.className = "block-hover-controls";
     controls.innerHTML = `
-      <button type="button" class="block-action-btn" title="Move Up" data-action="up">↑</button>
-      <button type="button" class="block-action-btn" title="Move Down" data-action="down">↓</button>
-      <button type="button" class="block-action-btn" title="Duplicate Block" data-action="duplicate">❐</button>
-      <button type="button" class="block-action-btn delete-btn" title="Delete Block" data-action="delete">✕</button>
+      <button type="button" class="block-action-btn" title="Move Up" data-action="up">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
+      </button>
+      <button type="button" class="block-action-btn" title="Move Down" data-action="down">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+      <button type="button" class="block-action-btn" title="Duplicate Block" data-action="duplicate">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      </button>
+      <button type="button" class="block-action-btn delete-btn" title="Delete Block" data-action="delete">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
     `;
 
     controls.querySelector('[data-action="up"]').addEventListener("click", () => this.moveBlock(index, -1));
@@ -720,18 +750,19 @@ class NotebookEditor {
   }
 
   setStatus(status) {
+    if (!this.statusText) return;
     if (status === "saving") {
-      this.statusDot.className = "status-dot saving";
       this.statusText.textContent = "Saving...";
+      this.statusText.className = "save-status-text saving";
     } else if (status === "saved") {
-      this.statusDot.className = "status-dot";
-      this.statusText.textContent = "All changes saved";
+      this.statusText.textContent = "Saved";
+      this.statusText.className = "save-status-text saved";
     } else if (status === "unsaved") {
-      this.statusDot.className = "status-dot unsaved";
-      this.statusText.textContent = "Unsaved changes";
+      this.statusText.textContent = "Unsaved";
+      this.statusText.className = "save-status-text unsaved";
     } else if (status === "error") {
-      this.statusDot.className = "status-dot unsaved";
-      this.statusText.textContent = "Error saving";
+      this.statusText.textContent = "Save error";
+      this.statusText.className = "save-status-text error";
     }
   }
 

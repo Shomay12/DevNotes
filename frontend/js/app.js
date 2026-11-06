@@ -13,6 +13,7 @@ class DevNoteApp {
 
     this.initTheme();
     this.initDOM();
+    this.initSidebarState();
     this.initSubsystems();
     this.attachEvents();
     this.loadAppConfig();
@@ -60,6 +61,7 @@ class DevNoteApp {
 
   initDOM() {
     this.sidebar = document.getElementById("app-sidebar");
+    this.btnSidebarCollapse = document.getElementById("btn-sidebar-collapse");
     this.notebookListContainer = document.getElementById("sidebar-notebook-list");
     this.btnNewNotebook = document.getElementById("btn-new-notebook");
     this.toastContainer = document.getElementById("toast-container");
@@ -70,6 +72,28 @@ class DevNoteApp {
     const toggleLabel = document.querySelector(".theme-toggle-btn span");
     if (toggleLabel) {
       toggleLabel.textContent = theme === "dark" ? "Light Mode" : "Dark Mode";
+    }
+  }
+
+  initSidebarState() {
+    const isCollapsed = localStorage.getItem("devnote_sidebar_collapsed") === "true";
+    if (isCollapsed && this.sidebar) {
+      this.sidebar.classList.add("collapsed");
+    }
+  }
+
+  toggleSidebar(forceState) {
+    if (!this.sidebar) return;
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      const isOpen = this.sidebar.classList.contains("mobile-open");
+      const shouldOpen = forceState !== undefined ? !forceState : !isOpen;
+      this.sidebar.classList.toggle("mobile-open", shouldOpen);
+    } else {
+      const isCurrentlyCollapsed = this.sidebar.classList.contains("collapsed");
+      const shouldCollapse = forceState !== undefined ? forceState : !isCurrentlyCollapsed;
+      this.sidebar.classList.toggle("collapsed", shouldCollapse);
+      localStorage.setItem("devnote_sidebar_collapsed", shouldCollapse ? "true" : "false");
     }
   }
 
@@ -90,6 +114,28 @@ class DevNoteApp {
   }
 
   attachEvents() {
+    // Sidebar Collapse Button inside sidebar header
+    if (this.btnSidebarCollapse) {
+      this.btnSidebarCollapse.addEventListener("click", () => this.toggleSidebar());
+    }
+
+    // Global keyboard shortcut: Cmd+B / Ctrl+B or Cmd+\
+    window.addEventListener("keydown", (e) => {
+      if ((e.metaKey || e.ctrlKey) && (e.key === "b" || e.key === "B" || e.key === "\\")) {
+        e.preventDefault();
+        this.toggleSidebar();
+      }
+    });
+
+    // Close mobile drawer on outside tap
+    document.addEventListener("click", (e) => {
+      if (window.innerWidth <= 768 && this.sidebar && this.sidebar.classList.contains("mobile-open")) {
+        if (!this.sidebar.contains(e.target) && !e.target.closest("#btn-sidebar-toggle")) {
+          this.sidebar.classList.remove("mobile-open");
+        }
+      }
+    });
+
     // New Notebook Button
     this.btnNewNotebook.addEventListener("click", () => this.handleCreateNotebook());
 
@@ -175,6 +221,7 @@ class DevNoteApp {
 
     if (nav === "search") {
       this.searchWorkspace.toggleCollapse(false);
+      this.searchWorkspace.switchView("search");
     } else if (nav === "snippets") {
       this.openSnippetsModal();
     } else if (nav === "recent") {

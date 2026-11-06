@@ -7,13 +7,22 @@
 const API = {
   // Retrieve token from query params or storage
   getAuthToken() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const paramToken = urlParams.get("token");
+    let paramToken = null;
+    try {
+      if (typeof window !== "undefined" && window.location && window.location.search) {
+        const urlParams = new URLSearchParams(window.location.search);
+        paramToken = urlParams.get("token");
+      }
+    } catch (_) {}
     if (paramToken) {
-      localStorage.setItem("devnote_auth_token", paramToken);
+      try { localStorage.setItem("devnote_auth_token", paramToken); } catch (_) {}
       return paramToken;
     }
-    return localStorage.getItem("devnote_auth_token") || "";
+    try {
+      return localStorage.getItem("devnote_auth_token") || "";
+    } catch (_) {
+      return "";
+    }
   },
 
   setAuthToken(token) {
@@ -66,7 +75,9 @@ const API = {
       }
 
       // Check if response is JSON or blob
-      const contentType = response.headers.get("content-type");
+      const contentType = (response.headers && typeof response.headers.get === "function") 
+        ? response.headers.get("content-type") 
+        : "";
       if (contentType && contentType.includes("application/json")) {
         return await response.json();
       }
@@ -322,6 +333,32 @@ const API = {
     return this.request(`/api/snippets/${id}`, {
       method: "DELETE",
     });
+  },
+
+  // Hacker News Tech Feed
+  async getHackerNews(feed = "top", limit = 25, query = "") {
+    const params = new URLSearchParams({ feed, limit: String(limit) });
+    if (query) params.append("query", query);
+    return this.request(`/api/news/hackernews?${params.toString()}`);
+  },
+
+  // LLM & AI Assistant Add-On
+  async chatWithLLM(data) {
+    return this.request("/api/llm/chat", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async testLLMConnection(data) {
+    return this.request("/api/llm/test", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async getLLMConfig() {
+    return this.request("/api/llm/config");
   },
 };
 

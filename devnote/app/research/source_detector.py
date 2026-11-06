@@ -160,17 +160,27 @@ def detect_source(url: str) -> Dict[str, Any]:
             "metadata": metadata
         }
 
-    # 8. Stack Overflow / Stack Exchange
-    if hostname in ("stackoverflow.com", "serverfault.com", "superuser.com", "askubuntu.com"):
+    # 8. Stack Overflow / Stack Exchange (Official API Extraction)
+    if hostname in ("stackoverflow.com", "serverfault.com", "superuser.com", "askubuntu.com") or hostname.endswith(".stackexchange.com"):
         return {
             "source_type": "stackoverflow",
             "source_name": "Stack Overflow",
-            "strategy": ReadingStrategy.PUBLIC_ARTICLE,
+            "strategy": ReadingStrategy.OFFICIAL_API,
             "allows_framing": False,
             "metadata": metadata
         }
 
-    # 9. Generic Documentation Sites
+    # 9. Wikipedia (Official API / Encyclopedic Reference)
+    if hostname in ("en.wikipedia.org", "wikipedia.org") or hostname.endswith(".wikipedia.org"):
+        return {
+            "source_type": "wikipedia",
+            "source_name": "Wikipedia Reference",
+            "strategy": ReadingStrategy.OFFICIAL_API,
+            "allows_framing": False,
+            "metadata": metadata
+        }
+
+    # 10. Generic Documentation Sites
     if hostname.startswith("docs.") or "readthedocs.io" in hostname or "/docs/" in path or "/documentation/" in path or "/api/" in path:
         return {
             "source_type": "technical_doc",

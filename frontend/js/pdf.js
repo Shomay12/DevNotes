@@ -21,6 +21,16 @@ class PDFManager {
       btn.addEventListener("click", () => this.closeExportModal());
     });
 
+    const jsonBtn = this.exportModal.querySelector("#btn-modal-export-json");
+    if (jsonBtn) {
+      jsonBtn.addEventListener("click", () => {
+        this.closeExportModal();
+        if (this.app && typeof this.app.exportCurrentNotebookJSON === "function") {
+          this.app.exportCurrentNotebookJSON();
+        }
+      });
+    }
+
     if (this.btnConfirmExport) {
       this.btnConfirmExport.addEventListener("click", () => this.handleExport());
     }

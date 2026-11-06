@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, Text, DateTime, JSON
 from devnote.app.database import Base
 
@@ -17,7 +17,7 @@ class SavedResource(Base):
     folder = Column(String(100), default="General")
     tags = Column(JSON, default=list)
     metadata_json = Column(JSON, default=dict)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     def to_dict(self):
         return {

@@ -100,7 +100,7 @@ class NotebookService:
         if not notebook:
             return None
 
-        update_data = notebook_in.dict(exclude_unset=True)
+        update_data = notebook_in.model_dump(exclude_unset=True) if hasattr(notebook_in, "model_dump") else notebook_in.dict(exclude_unset=True)
         for key, value in update_data.items():
             if key != "version":
                 setattr(notebook, key, value)

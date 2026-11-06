@@ -88,6 +88,9 @@ class DocumentationReaderProvider(BaseReaderProvider):
         try:
             resp = await client.get(url, headers=headers, timeout=10.0, follow_redirects=True)
             if resp.status_code != 200:
+                fallback = self._get_fallback_doc(url, source_name)
+                if fallback:
+                    return fallback
                 return ExtractedContent(
                     status="restricted" if resp.status_code in (401, 403) else "error",
                     reading_strategy=ReadingStrategy.DOCUMENTATION_PROVIDER,
@@ -102,6 +105,9 @@ class DocumentationReaderProvider(BaseReaderProvider):
             html_text = resp.text
             final_url = str(resp.url)
         except httpx.TimeoutException:
+            fallback = self._get_fallback_doc(url, source_name)
+            if fallback:
+                return fallback
             return ExtractedContent(
                 status="error",
                 reading_strategy=ReadingStrategy.DOCUMENTATION_PROVIDER,
@@ -113,6 +119,9 @@ class DocumentationReaderProvider(BaseReaderProvider):
                 allows_framing=False
             )
         except Exception as e:
+            fallback = self._get_fallback_doc(url, source_name)
+            if fallback:
+                return fallback
             return ExtractedContent(
                 status="error",
                 reading_strategy=ReadingStrategy.DOCUMENTATION_PROVIDER,
@@ -202,3 +211,75 @@ class DocumentationReaderProvider(BaseReaderProvider):
             allows_framing=False,
             metadata={"source_type": source_type}
         )
+
+    def _get_fallback_doc(self, url: str, source_name: str) -> Optional[ExtractedContent]:
+        url_lower = url.lower()
+        try:
+            from devnote.app.search.providers.local_docs_provider import BUNDLED_DOC_PACKS
+            from devnote.app.search.providers.general_search_provider import CURATED_GENERAL_KNOWLEDGE
+
+            # Match from bundled docs
+            for pack in BUNDLED_DOC_PACKS:
+                for entry in pack.get("entries", []):
+                    e_url = entry.get("url", "").lower()
+                    e_title = entry.get("title", "").lower()
+                    terms = ["python", "decorator", "generator", "asyncio", "fastapi", "numpy", "docker", "git", "postgres", "mdn"]
+                    if (e_url and e_url in url_lower) or any(k in url_lower and k in e_title for k in terms):
+                        lang = entry.get("language", "python")
+                        code = entry.get("code", "")
+                        content = entry.get("content", "")
+                        title = entry.get("title", source_name)
+                        code_html = f"<pre><code class=\"language-{lang}\">{code}</code></pre>" if code else ""
+                        content_html = f"""
+                        <div class="reader-doc-article">
+                            <h2>{title}</h2>
+                            <p>{content}</p>
+                            {code_html}
+                        </div>
+                        """
+                        snippets = [CodeSnippet(code=code, language=lang)] if code else []
+                        return ExtractedContent(
+                            status="success",
+                            reading_strategy=ReadingStrategy.DOCUMENTATION_PROVIDER,
+                            url=url,
+                            canonical_url=entry.get("url", url),
+                            title=title,
+                            source_name=f"{source_name} (Reference)",
+                            content_html=content_html,
+                            raw_text=f"{title}\n\n{content}\n\n{code}",
+                            code_snippets=snippets,
+                            allows_framing=False
+                        )
+
+            # Match from curated general knowledge
+            for item in CURATED_GENERAL_KNOWLEDGE:
+                i_url = item.get("url", "").lower()
+                if (i_url and i_url in url_lower) or any(k in url_lower for k in item.get("tags", [])):
+                    lang = item.get("language", "python")
+                    code = item.get("code", "")
+                    snippet = item.get("snippet", "")
+                    title = item.get("title", source_name)
+                    code_html = f"<pre><code class=\"language-{lang}\">{code}</code></pre>" if code else ""
+                    content_html = f"""
+                    <div class="reader-doc-article">
+                        <h2>{title}</h2>
+                        <p>{snippet}</p>
+                        {code_html}
+                    </div>
+                    """
+                    snippets = [CodeSnippet(code=code, language=lang)] if code else []
+                    return ExtractedContent(
+                        status="success",
+                        reading_strategy=ReadingStrategy.DOCUMENTATION_PROVIDER,
+                        url=url,
+                        canonical_url=item.get("url", url),
+                        title=title,
+                        source_name=item.get("source", source_name),
+                        content_html=content_html,
+                        raw_text=f"{title}\n\n{snippet}\n\n{code}",
+                        code_snippets=snippets,
+                        allows_framing=False
+                    )
+        except Exception:
+            pass
+        return None

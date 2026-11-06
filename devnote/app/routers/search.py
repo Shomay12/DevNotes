@@ -218,7 +218,7 @@ def download_doc_index(
         doc_idx.status = "downloaded"
         doc_idx.entry_count = len(pack["entries"])
         doc_idx.size_bytes = len(str(pack["entries"]))
-        doc_idx.downloaded_at = datetime.datetime.utcnow()
+        doc_idx.downloaded_at = datetime.datetime.now(datetime.timezone.utc)
         db.commit()
         db.refresh(doc_idx)
     except Exception as e:

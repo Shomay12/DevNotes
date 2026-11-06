@@ -48,8 +48,11 @@ def init_db():
     except Exception as e:
         print(f"Notice: FTS5 table initialization: {e}")
 
-# Ensure tables are created on module import
-init_db()
+# Ensure tables are created on module import if models are ready
+try:
+    init_db()
+except ImportError:
+    pass
 
 def get_db():
 

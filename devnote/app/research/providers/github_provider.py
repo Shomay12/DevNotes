@@ -82,11 +82,11 @@ class GitHubReaderProvider(BaseReaderProvider):
           </div>
           <p class="reader-gh-description">{self._escape_html(description)}</p>
           <div class="reader-gh-badges">
-            {f'<span class="reader-badge reader-badge-primary">⭐ {stars:,} stars</span>' if stars else ''}
-            {f'<span class="reader-badge reader-badge-neutral">🍴 {forks:,} forks</span>' if forks else ''}
+            {f'<span class="reader-badge reader-badge-primary">{stars:,} stars</span>' if stars else ''}
+            {f'<span class="reader-badge reader-badge-neutral">{forks:,} forks</span>' if forks else ''}
             {f'<span class="reader-badge reader-badge-lang">{self._escape_html(language)}</span>' if language else ''}
-            {f'<span class="reader-badge reader-badge-neutral">📜 {self._escape_html(license_name)}</span>' if license_name else ''}
-            <span class="reader-badge reader-badge-neutral">🌿 {self._escape_html(default_branch)}</span>
+            {f'<span class="reader-badge reader-badge-neutral">{self._escape_html(license_name)}</span>' if license_name else ''}
+            <span class="reader-badge reader-badge-neutral">{self._escape_html(default_branch)}</span>
           </div>
         </div>
         """

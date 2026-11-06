@@ -47,13 +47,11 @@ class SearchWorkspace {
       <!-- DevSearch Header -->
       <div class="search-panel-header">
         <div class="search-title">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <span>DevSearch</span>
-          <span class="devsearch-engine-badge">Research Workspace</span>
-          <span class="devsearch-status-pill online" id="devsearch-online-badge">● Online</span>
+          <span>Search</span>
         </div>
         <div class="search-header-actions">
           <button type="button" class="btn btn-icon-sm btn-split-search" title="Reset to Split View (50% / 50%)">
@@ -62,8 +60,9 @@ class SearchWorkspace {
           <button type="button" class="btn btn-icon-sm btn-expand-search" title="Toggle Full Workspace / Split">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
           </button>
-          <button type="button" class="btn btn-icon-sm btn-close-search" title="Close Research Workspace (Cmd+K)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <button type="button" class="btn btn-sm btn-close-search" title="Close Search (Esc or Cmd+K)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            Close
           </button>
         </div>
       </div>
@@ -102,56 +101,25 @@ class SearchWorkspace {
         <div class="devsearch-view active" id="devsearch-view-search">
           <div class="devsearch-offline-banner" style="display: none;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path><path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
-            <span>Offline Mode: Searching local offline documentation and saved bookmarks.</span>
+            <span>Offline Mode</span>
           </div>
 
           <div class="search-input-wrapper">
             <svg class="search-icon-left" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" class="search-input-box" placeholder="Search docs, concepts, errors, code, GitHub, or Stack Overflow (Cmd+K)..." />
-            <button type="button" class="search-clear-btn" title="Clear Search">✕</button>
+            <input type="text" class="search-input-box" placeholder="Search documentation, Wikipedia, Hacker News, Stack Overflow..." />
+            <button type="button" class="search-clear-btn" title="Clear Search">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
           </div>
 
           <!-- Dynamic Category Tabs -->
           <div class="search-tabs-row">
             <button type="button" class="search-tab-pill active" data-category="all">All Sources</button>
-            <button type="button" class="search-tab-pill" data-category="it">IT &amp; Dev</button>
-            <button type="button" class="search-tab-pill" data-category="science">Science</button>
             <button type="button" class="search-tab-pill" data-category="general">General Web</button>
             <button type="button" class="search-tab-pill" data-category="doc">Official Docs</button>
-            <button type="button" class="search-tab-pill" data-category="code">Code Examples</button>
             <button type="button" class="search-tab-pill" data-category="stackoverflow">Stack Overflow</button>
             <button type="button" class="search-tab-pill" data-category="github">GitHub</button>
-            <button type="button" class="search-tab-pill" data-category="offline">Offline (FTS5)</button>
-            <button type="button" class="search-tab-pill" data-category="notebook">Notebooks</button>
           </div>
-
-          <!-- Dynamic Filters: Language & Framework -->
-          <div class="search-filters-bar">
-            <select class="search-filter-select" id="search-filter-lang">
-              <option value="">All Languages</option>
-              <option value="python">Python</option>
-              <option value="javascript">JavaScript / TypeScript</option>
-              <option value="rust">Rust</option>
-              <option value="go">Go</option>
-              <option value="java">Java</option>
-              <option value="c++">C / C++</option>
-              <option value="sql">SQL / Postgres</option>
-              <option value="dart">Dart / Flutter</option>
-            </select>
-            <select class="search-filter-select" id="search-filter-fw">
-              <option value="">All Frameworks</option>
-              <option value="fastapi">FastAPI</option>
-              <option value="django">Django</option>
-              <option value="react">React</option>
-              <option value="node.js">Node.js</option>
-              <option value="docker">Docker</option>
-              <option value="git">Git</option>
-              <option value="pytorch">PyTorch</option>
-            </select>
-          </div>
-
-          <!-- Intent & Routing Status Banner -->
-          <div class="search-intent-banner" style="display: none;"></div>
 
           <!-- Results List -->
           <div class="search-results-list">
@@ -180,7 +148,7 @@ class SearchWorkspace {
             </button>
 
             <div class="browser-url-bar-wrapper">
-              <input type="text" class="browser-url-input" placeholder="https://docs.python.org..." />
+              <input type="text" class="browser-url-input" placeholder="Enter webpage URL (https://...) or raw search query..." />
               <span class="reader-strategy-pill doc" id="reader-strategy-pill" title="Current Reading Strategy">Native Reader</span>
             </div>
 
@@ -222,9 +190,15 @@ class SearchWorkspace {
           <div class="reader-find-bar" id="reader-find-bar">
             <input type="text" class="reader-find-input" placeholder="Find in article..." />
             <span class="reader-find-count">0 / 0</span>
-            <button type="button" class="btn btn-icon-sm btn-find-prev" title="Previous match">▲</button>
-            <button type="button" class="btn btn-icon-sm btn-find-next" title="Next match">▼</button>
-            <button type="button" class="btn btn-icon-sm btn-find-close" title="Close find bar">✕</button>
+            <button type="button" class="btn btn-icon-sm btn-find-prev" title="Previous match">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
+            </button>
+            <button type="button" class="btn btn-icon-sm btn-find-next" title="Next match">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <button type="button" class="btn btn-icon-sm btn-find-close" title="Close find bar">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
           </div>
 
           <!-- Reader Content Frame & Fallback Container -->
@@ -276,12 +250,12 @@ class SearchWorkspace {
 
             <!-- 4. Floating Selection Action Pill -->
             <div class="reader-selection-pill" id="reader-selection-pill">
-              <button type="button" class="btn-pill-insert-evidence">
+              <button type="button" class="btn-pill-insert-evidence" title="Insert into Notebook">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                + Insert Evidence
+                + Insert into Notebook
               </button>
-              <button type="button" class="btn-pill-quote-dock">
-                + Quote to Dock
+              <button type="button" class="btn-pill-quote-dock" title="Copy to Dock">
+                Quote to Dock
               </button>
             </div>
           </div>
@@ -293,7 +267,7 @@ class SearchWorkspace {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                 Study &amp; Evidence Capture
               </span>
-              <button type="button" class="btn-toggle-evidence-dock" title="Toggle Dock">▼</button>
+              <button type="button" class="btn-toggle-evidence-dock" title="Toggle Dock">Hide</button>
             </div>
             <div class="evidence-dock-body">
               <div class="evidence-inputs-row">
@@ -307,17 +281,11 @@ class SearchWorkspace {
                 </div>
               </div>
               <div class="evidence-actions-row">
-                <button type="button" class="btn btn-primary btn-evidence-insert-quote" title="Insert formatted quotation, source URL, retrieved date, and note into notebook">
-                  + Insert Evidence
+                <button type="button" class="btn btn-primary btn-evidence-insert-quote" title="Insert formatted quotation, source URL, and note into notebook">
+                  + Insert into Notebook
                 </button>
-                <button type="button" class="btn btn-outline btn-evidence-insert-ref" title="Insert title, description, and source link">
-                  + Ref
-                </button>
-                <button type="button" class="btn btn-outline btn-evidence-insert-code" title="Insert executable code block into notebook" style="display: none;">
-                  + Code Block
-                </button>
-                <button type="button" class="btn btn-outline btn-evidence-insert-both" title="Insert reference citation and code block">
-                  + Insert All
+                <button type="button" class="btn btn-outline btn-evidence-clear" title="Clear Quote and Note">
+                  Clear
                 </button>
               </div>
             </div>
@@ -363,6 +331,7 @@ class SearchWorkspace {
               <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px;">Default Search Provider</label>
               <select id="setting-default-provider" class="form-input">
                 <option value="searxng">SearXNG Meta-Search (Default)</option>
+                <option value="general">General Web &amp; Knowledge</option>
                 <option value="all">Unified (All Sources)</option>
                 <option value="devdocs">DevDocs / Official Docs</option>
                 <option value="local_docs">Local Offline Docs (FTS5)</option>
@@ -396,7 +365,9 @@ class SearchWorkspace {
       <div class="devsearch-preview-drawer">
         <div class="preview-drawer-header">
           <span class="preview-source-badge">Preview</span>
-          <button type="button" class="btn-close-preview" title="Close Preview">✕</button>
+          <button type="button" class="btn-close-preview" title="Close Preview">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
         </div>
         <div class="preview-drawer-content"></div>
         <div class="preview-drawer-actions">
@@ -526,14 +497,25 @@ class SearchWorkspace {
       });
     });
 
-    // 5. Language & Framework Filters
-    this.langFilter.addEventListener("change", (e) => {
-      this.currentLanguage = e.target.value;
-      this.performSearch(this.currentQuery);
-    });
-    this.fwFilter.addEventListener("change", (e) => {
-      this.currentFramework = e.target.value;
-      this.performSearch(this.currentQuery);
+    // 5. Language & Framework Filters (if present)
+    if (this.langFilter) {
+      this.langFilter.addEventListener("change", (e) => {
+        this.currentLanguage = e.target.value;
+        this.performSearch(this.currentQuery);
+      });
+    }
+    if (this.fwFilter) {
+      this.fwFilter.addEventListener("change", (e) => {
+        this.currentFramework = e.target.value;
+        this.performSearch(this.currentQuery);
+      });
+    }
+
+    // Close on Escape key press
+    this.panel.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        this.toggleCollapse(true);
+      }
     });
 
     // 6. Navigation Tabs
@@ -551,7 +533,12 @@ class SearchWorkspace {
 
     // 8. Research Reader Navigation & History Controls
     this.browserBackResultsBtn.addEventListener("click", () => {
-      this.switchView("search");
+      if (this.currentBrowserItem) {
+        this.currentBrowserItem = null;
+        this.renderReaderSearchHub();
+      } else {
+        this.switchView("search");
+      }
     });
 
     this.browserNavBackBtn.addEventListener("click", () => {
@@ -585,13 +572,24 @@ class SearchWorkspace {
 
     this.browserUrlInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
-        let url = this.browserUrlInput.value.trim();
-        if (url && !url.startsWith("http://") && !url.startsWith("https://")) {
-          url = `https://${url}`;
-          this.browserUrlInput.value = url;
-        }
-        if (url) {
+        let input = this.browserUrlInput.value.trim();
+        if (!input) return;
+
+        // Omnibox: check if input is a valid URL/domain or a raw text search query
+        const isLikelyUrl = /^https?:\/\//i.test(input) || 
+          (/^localhost(:\d+)?(\/.*)?$/i.test(input)) ||
+          (/^[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+(\/.*)?$/i.test(input) && !input.includes(" "));
+
+        if (isLikelyUrl) {
+          let url = input;
+          if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = `https://${url}`;
+            this.browserUrlInput.value = url;
+          }
           this.loadUrlInBrowser(url, false, true);
+        } else {
+          // Input is RAW TEXT -> Execute General Search right in the Reader Hub!
+          this.renderReaderSearchHub(input);
         }
       }
     });
@@ -771,29 +769,45 @@ class SearchWorkspace {
 
     // 9. Study & Evidence Dock Controls
     this.evidenceToggleBtn.addEventListener("click", () => {
-      this.evidenceDock.classList.toggle("collapsed");
-      this.evidenceToggleBtn.textContent = this.evidenceDock.classList.contains("collapsed") ? "▲" : "▼";
+      const isCollapsed = this.evidenceDock.classList.toggle("collapsed");
+      this.evidenceToggleBtn.textContent = isCollapsed ? "Show" : "Hide";
     });
 
-    this.insertQuoteBtn.addEventListener("click", () => {
-      const item = this.getEvidencePayload();
-      this.insertResultIntoNotebook(item, "evidence");
-    });
+    if (this.insertQuoteBtn) {
+      this.insertQuoteBtn.addEventListener("click", () => {
+        const item = this.getEvidencePayload();
+        this.insertResultIntoNotebook(item, "evidence");
+      });
+    }
 
-    this.insertRefBtn.addEventListener("click", () => {
-      const item = this.getEvidencePayload();
-      this.insertResultIntoNotebook(item, "reference");
-    });
+    const clearEvidenceBtn = this.panel.querySelector(".btn-evidence-clear");
+    if (clearEvidenceBtn) {
+      clearEvidenceBtn.addEventListener("click", () => {
+        if (this.quoteInput) this.quoteInput.value = "";
+        if (this.noteInput) this.noteInput.value = "";
+      });
+    }
 
-    this.insertCodeBtn.addEventListener("click", () => {
-      const item = this.getEvidencePayload();
-      this.insertResultIntoNotebook(item, "code");
-    });
+    if (this.insertRefBtn) {
+      this.insertRefBtn.addEventListener("click", () => {
+        const item = this.getEvidencePayload();
+        this.insertResultIntoNotebook(item, "reference");
+      });
+    }
 
-    this.insertAllBtn.addEventListener("click", () => {
-      const item = this.getEvidencePayload();
-      this.insertResultIntoNotebook(item, "both");
-    });
+    if (this.insertCodeBtn) {
+      this.insertCodeBtn.addEventListener("click", () => {
+        const item = this.getEvidencePayload();
+        this.insertResultIntoNotebook(item, "code");
+      });
+    }
+
+    if (this.insertAllBtn) {
+      this.insertAllBtn.addEventListener("click", () => {
+        const item = this.getEvidencePayload();
+        this.insertResultIntoNotebook(item, "both");
+      });
+    }
 
     // 10. Global Shortcuts in Research Workspace
     window.addEventListener("keydown", (e) => {
@@ -851,7 +865,9 @@ class SearchWorkspace {
     // Populate Study & Evidence Capture Dock
     this.quoteInput.value = item.snippet || "";
     this.noteInput.value = "";
-    this.insertCodeBtn.style.display = item.code ? "inline-flex" : "none";
+    if (this.insertCodeBtn) {
+      this.insertCodeBtn.style.display = item.code ? "inline-flex" : "none";
+    }
 
     // Switch to Browser / Reader View
     this.switchView("browser");
@@ -862,7 +878,11 @@ class SearchWorkspace {
 
   async loadUrlInBrowser(url, forceRefresh = false, addToHistory = true) {
     if (!url || url === "#") {
-      this.showFallbackView("Empty or Invalid URL", "Please specify a valid web URL or documentation link.");
+      if (this.currentBrowserItem && (this.currentBrowserItem.snippet || this.currentBrowserItem.code)) {
+        this.renderItemInNativeReader(this.currentBrowserItem);
+        return;
+      }
+      this.renderReaderSearchHub();
       return;
     }
 
@@ -892,9 +912,14 @@ class SearchWorkspace {
 
       this.readerLoadingView.style.display = "none";
 
-      if (data.status === "restricted" || data.status === "error") {
+      if (data.status === "restricted" || data.status === "error" || !data.content_html) {
+        if (this.currentBrowserItem && (this.currentBrowserItem.snippet || this.currentBrowserItem.code)) {
+          this.renderItemInNativeReader(this.currentBrowserItem, data.error_message);
+          return;
+        }
+
         this.showFallbackView(
-          data.title || "External Technical Resource",
+          data.title || (this.currentBrowserItem ? this.currentBrowserItem.title : "External Technical Resource"),
           data.error_message || "This website restricts in-app content extraction. You can open the official documentation directly in your browser."
         );
         this.updateStrategyPill("restricted", "External Only");
@@ -921,21 +946,21 @@ class SearchWorkspace {
       let metaHtml = `
         <span class="reader-meta-item">
           <a href="${this.escapeHTML(data.canonical_url || data.url)}" target="_blank" rel="noopener noreferrer" class="reader-meta-link">
-            🌐 ${this.escapeHTML(data.source_name || "Source")}
+            ${this.escapeHTML(data.source_name || "Source")}
           </a>
         </span>
       `;
 
       if (data.author) {
-        metaHtml += `<span class="reader-meta-item">✍️ ${this.escapeHTML(data.author)}</span>`;
+        metaHtml += `<span class="reader-meta-item">${this.escapeHTML(data.author)}</span>`;
       }
       if (data.published_at) {
-        metaHtml += `<span class="reader-meta-item">📅 ${this.escapeHTML(data.published_at.slice(0, 10))}</span>`;
+        metaHtml += `<span class="reader-meta-item">${this.escapeHTML(data.published_at.slice(0, 10))}</span>`;
       }
       if (data.raw_text) {
         const wordCount = data.raw_text.trim().split(/\s+/).length;
         const readMins = Math.max(1, Math.round(wordCount / 200));
-        metaHtml += `<span class="reader-meta-item">⏱️ ${readMins} min read</span>`;
+        metaHtml += `<span class="reader-meta-item">${readMins} min read</span>`;
       }
 
       this.readerArticleMeta.innerHTML = metaHtml;
@@ -962,7 +987,7 @@ class SearchWorkspace {
         this.quoteInput.value = data.raw_text.slice(0, 250) + "...";
       }
 
-      if (firstCode) {
+      if (firstCode && this.insertCodeBtn) {
         this.insertCodeBtn.style.display = "inline-flex";
       }
 
@@ -971,6 +996,10 @@ class SearchWorkspace {
 
     } catch (err) {
       this.readerLoadingView.style.display = "none";
+      if (this.currentBrowserItem && (this.currentBrowserItem.snippet || this.currentBrowserItem.code)) {
+        this.renderItemInNativeReader(this.currentBrowserItem, err.message);
+        return;
+      }
       this.showFallbackView(
         "Extraction Error",
         `Could not retrieve content: ${err.message}. You can open the original website in a new tab.`
@@ -1052,6 +1081,238 @@ class SearchWorkspace {
       } else {
         this.fallbackCardCodeWrap.style.display = "none";
       }
+    }
+  }
+
+  renderItemInNativeReader(item, notice = null) {
+    if (!item) return;
+    this.currentBrowserItem = item;
+    this.readerLoadingView.style.display = "none";
+    this.readerFallbackView.style.display = "none";
+    this.readerNativeView.style.display = "block";
+
+    const url = item.url || "";
+    this.browserUrlInput.value = url;
+    this.browserOpenExtBtn.href = url || "#";
+    this.fallbackMainExtBtn.href = url || "#";
+
+    this.readerArticleTitle.textContent = item.title || "Technical Document";
+
+    let metaHtml = `<span class="reader-meta-item">Source: ${this.escapeHTML(item.source || "DevSearch")}</span>`;
+    if (item.category) {
+      metaHtml += `<span class="reader-meta-item">Category: ${this.escapeHTML(item.category)}</span>`;
+    }
+    if (url && url !== "#") {
+      metaHtml += `<a class="reader-meta-item reader-external-link" href="${this.escapeHTML(url)}" target="_blank" rel="noopener noreferrer">Visit Original Site &nearr;</a>`;
+    }
+    this.readerArticleMeta.innerHTML = metaHtml;
+
+    let bodyHtml = "";
+    if (notice) {
+      bodyHtml += `<div class="reader-notice-box" style="margin-bottom: 1rem; padding: 0.75rem 1rem; border-radius: 6px; background: var(--bg-secondary, #252526); border-left: 3px solid var(--accent, #3b82f6); font-size: 0.85rem; color: var(--text-secondary, #9ca3af);">
+        ${this.escapeHTML(notice)}
+      </div>`;
+    }
+
+    if (item.snippet) {
+      bodyHtml += `<div class="reader-lead-paragraph" style="font-size: 0.95rem; line-height: 1.6; color: var(--text-primary, #e5e7eb); margin-bottom: 1.25rem;">${this.escapeHTML(item.snippet)}</div>`;
+    }
+
+    if (item.code) {
+      const lang = item.language || "python";
+      bodyHtml += `<pre><code class="language-${this.escapeHTML(lang)}">${this.escapeHTML(item.code)}</code></pre>`;
+    }
+
+    this.readerArticleBody.innerHTML = bodyHtml || "<p>No content preview available for this document.</p>";
+    this.enhanceReaderCodeBlocks();
+
+    this.updateStrategyPill("extracted", "Reader Preview");
+
+    if (item.snippet && !this.quoteInput.value.trim()) {
+      this.quoteInput.value = item.snippet.slice(0, 250);
+    }
+    if (item.code && this.insertCodeBtn) {
+      this.insertCodeBtn.style.display = "inline-flex";
+    }
+
+    this.readerNativeView.scrollTop = 0;
+  }
+
+  renderReaderSearchHub(initialQuery = "") {
+    this.currentBrowserItem = null;
+    this.readerLoadingView.style.display = "none";
+    this.readerFallbackView.style.display = "none";
+    this.readerNativeView.style.display = "block";
+
+    this.readerArticleTitle.textContent = "General Search & Research";
+    this.readerArticleMeta.innerHTML = `
+      <span class="reader-meta-item">Unified Multi-Source Engine</span>
+      <span class="reader-meta-item">All Sources Active</span>
+    `;
+
+    this.updateStrategyPill("general", "General Search");
+
+    const queryVal = initialQuery ? this.escapeHTML(initialQuery) : "";
+    if (initialQuery) {
+      this.browserUrlInput.value = initialQuery;
+    }
+
+    this.readerArticleBody.innerHTML = `
+      <div class="reader-search-hub">
+        <p class="reader-hub-subtitle" style="font-size: 0.88rem; color: var(--text-secondary, #9ca3af); margin-bottom: 1rem; line-height: 1.5;">
+          Search technical topics across General Web, Official Docs, Stack Overflow, GitHub, DevDocs, Wikipedia, and Local Offline Documentation.
+        </p>
+
+        <div class="reader-hub-input-row" style="display: flex; gap: 8px; margin-bottom: 1rem;">
+          <input type="text" id="reader-hub-query-input" class="search-input-box" style="flex: 1;" placeholder="Enter programming language, library, concept, or error..." value="${queryVal}" />
+          <button type="button" id="reader-hub-submit-btn" class="btn btn-primary" style="padding: 0 16px; font-weight: 500;">Search All Sources</button>
+        </div>
+
+        <div class="reader-hub-topics" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.25rem;">
+          <span style="font-size: 0.78rem; color: var(--text-muted, #6b7280); align-self: center; margin-right: 4px;">Quick Topics:</span>
+          <button type="button" class="search-tab-pill reader-topic-pill" data-query="Python asyncio concurrent tasks">Python Asyncio</button>
+          <button type="button" class="search-tab-pill reader-topic-pill" data-query="FastAPI REST API tutorial">FastAPI</button>
+          <button type="button" class="search-tab-pill reader-topic-pill" data-query="JavaScript Promise async await">JS Promises</button>
+          <button type="button" class="search-tab-pill reader-topic-pill" data-query="Docker Compose multi-container">Docker</button>
+          <button type="button" class="search-tab-pill reader-topic-pill" data-query="Binary Search Tree algorithm">Algorithms</button>
+          <button type="button" class="search-tab-pill reader-topic-pill" data-query="Git rebase interactive">Git</button>
+        </div>
+
+        <div id="reader-hub-results" class="reader-hub-results-list" style="display: flex; flex-direction: column; gap: 12px;"></div>
+      </div>
+    `;
+
+    const hubInput = this.readerArticleBody.querySelector("#reader-hub-query-input");
+    const hubBtn = this.readerArticleBody.querySelector("#reader-hub-submit-btn");
+    const topicPills = this.readerArticleBody.querySelectorAll(".reader-topic-pill");
+
+    const triggerSearch = () => {
+      const q = (hubInput?.value || "").trim();
+      if (!q) return;
+      this.browserUrlInput.value = q;
+      this.executeReaderHubSearch(q);
+    };
+
+    if (hubBtn) {
+      hubBtn.addEventListener("click", triggerSearch);
+    }
+    if (hubInput) {
+      hubInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") triggerSearch();
+      });
+      if (!initialQuery) {
+        setTimeout(() => hubInput.focus(), 50);
+      }
+    }
+
+    topicPills.forEach(pill => {
+      pill.addEventListener("click", () => {
+        const q = pill.dataset.query;
+        if (hubInput) hubInput.value = q;
+        this.browserUrlInput.value = q;
+        this.executeReaderHubSearch(q);
+      });
+    });
+
+    if (initialQuery) {
+      this.executeReaderHubSearch(initialQuery);
+    }
+  }
+
+  async executeReaderHubSearch(query) {
+    const resultsContainer = this.readerArticleBody.querySelector("#reader-hub-results");
+    if (!resultsContainer) return;
+
+    resultsContainer.innerHTML = `
+      <div class="search-state-empty" style="padding: 2rem 0; text-align: center;">
+        <div class="search-spinner" style="margin: 0 auto 10px;"></div>
+        <span style="font-size: 0.88rem; color: var(--text-secondary, #9ca3af);">Searching all sources for "${this.escapeHTML(query)}"...</span>
+      </div>
+    `;
+
+    try {
+      const payload = {
+        query: query.trim(),
+        category: "all",
+        limit: 25
+      };
+
+      const data = await API.unifiedSearch(payload);
+      const results = data.results || [];
+
+      if (results.length === 0) {
+        resultsContainer.innerHTML = `
+          <div class="search-state-empty" style="padding: 2rem 0; text-align: center;">
+            <span style="font-size: 0.88rem; color: var(--text-secondary, #9ca3af);">No results found across developer sources for "${this.escapeHTML(query)}".</span>
+          </div>
+        `;
+        return;
+      }
+
+      resultsContainer.innerHTML = "";
+
+      results.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "search-result-card";
+        card.style.cursor = "default";
+
+        const cat = (item.category || "").toLowerCase();
+        const catBadgeClass =
+          cat === "stackoverflow" ? "badge-so" :
+          cat === "github" ? "badge-gh" :
+          cat === "wikipedia" ? "badge-doc" :
+          cat === "hackernews" ? "badge-warning" :
+          cat === "doc" ? "badge-doc" : "badge-general";
+
+        const sourceLabel = item.source || item.provider || "General Web";
+
+        let codePreviewHtml = "";
+        if (item.code) {
+          const lang = item.language || "code";
+          codePreviewHtml = `
+            <div class="search-result-code-preview">
+              <span class="code-preview-lang">${this.escapeHTML(lang)}</span>
+              <pre><code>${this.escapeHTML(item.code.slice(0, 400))}</code></pre>
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div class="search-result-header">
+            <span class="search-badge ${catBadgeClass}">${this.escapeHTML(sourceLabel)}</span>
+            <span class="search-result-url">${this.escapeHTML(item.url || "")}</span>
+          </div>
+          <h4 class="search-result-title" style="cursor: pointer; color: var(--accent, #3b82f6);">${this.escapeHTML(item.title || "Untitled Resource")}</h4>
+          <p class="search-result-snippet">${this.escapeHTML(item.snippet || "")}</p>
+          ${codePreviewHtml}
+          <div class="search-result-actions" style="margin-top: 8px; display: flex; gap: 8px;">
+            <button type="button" class="btn btn-xs btn-reader-hub-open" style="background: var(--accent, #3b82f6); color: #fff; font-weight: 500;">Read in Reader</button>
+            <button type="button" class="btn btn-xs btn-reader-hub-insert">+ Insert into Notebook</button>
+            ${item.url ? `<a href="${this.escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer" class="btn btn-xs btn-ghost" style="text-decoration: none;">Open ↗</a>` : ""}
+          </div>
+        `;
+
+        const titleEl = card.querySelector(".search-result-title");
+        const readBtn = card.querySelector(".btn-reader-hub-open");
+        const insertBtn = card.querySelector(".btn-reader-hub-insert");
+
+        const openDoc = () => this.openInResearchBrowser(item);
+
+        titleEl.addEventListener("click", openDoc);
+        readBtn.addEventListener("click", openDoc);
+        insertBtn.addEventListener("click", () => {
+          this.insertResultIntoNotebook(item, "all");
+        });
+
+        resultsContainer.appendChild(card);
+      });
+
+    } catch (err) {
+      resultsContainer.innerHTML = `
+        <div class="search-state-empty" style="color: var(--error-text, #ef4444); padding: 1.5rem 0; text-align: center;">
+          <span>Search failed: ${this.escapeHTML(err.message)}</span>
+        </div>
+      `;
     }
   }
 
@@ -1205,7 +1466,7 @@ class SearchWorkspace {
     const isOnline = navigator.onLine;
     if (this.onlineBadge) {
       this.onlineBadge.className = `devsearch-status-pill ${isOnline ? "online" : "offline"}`;
-      this.onlineBadge.textContent = isOnline ? "● Online" : "● Offline";
+      this.onlineBadge.textContent = isOnline ? "Online" : "Offline";
     }
     if (this.offlineBanner) {
       this.offlineBanner.style.display = isOnline ? "none" : "flex";
@@ -1219,7 +1480,7 @@ class SearchWorkspace {
     if (savedWidth) {
       this.panel.style.width = savedWidth;
     } else {
-      this.panel.style.width = "50%";
+      this.panel.style.width = "450px";
     }
 
     if (savedState === "expanded") {
@@ -1227,7 +1488,10 @@ class SearchWorkspace {
       this.panel.style.width = "100%";
       this.isExpanded = true;
       if (this.expandBtn) this.expandBtn.classList.add("active");
-    } else if (savedState === "collapsed") {
+    } else if (savedState === "split") {
+      this.panel.classList.remove("collapsed");
+      if (this.resizer) this.resizer.style.display = "block";
+    } else {
       this.toggleCollapse(true);
     }
   }
@@ -1244,6 +1508,9 @@ class SearchWorkspace {
     else if (viewName === "saved") this.loadSavedResources();
     else if (viewName === "docs") this.loadDocIndexes();
     else if (viewName === "settings") this.loadSettings();
+    else if (viewName === "browser" && !this.currentBrowserItem) {
+      this.renderReaderSearchHub();
+    }
   }
 
   initDraggableResizer() {
@@ -1362,18 +1629,8 @@ class SearchWorkspace {
 
       const data = await API.unifiedSearch(payload);
 
-      // Render Intent Banner if classified
-      if (data.intent && query.trim()) {
-        const intentText = data.intent === "error" ? "Error Troubleshooting" :
-                           data.intent === "code" ? "Code Example Implementation" :
-                           data.intent === "api" ? "API Reference" : "Documentation & Concepts";
-        this.intentBanner.style.display = "flex";
-        this.intentBanner.innerHTML = `
-          <span>Query classified: <strong>${intentText}</strong></span>
-          ${data.detected_language ? `<span class="badge badge-neutral">${data.detected_language}</span>` : ""}
-          ${data.cached ? `<span class="badge badge-success" title="Instant cache response">Cached</span>` : ""}
-        `;
-      } else {
+      // Hide extra classification banner for clean, minimal UI
+      if (this.intentBanner) {
         this.intentBanner.style.display = "none";
       }
 
@@ -1390,11 +1647,19 @@ class SearchWorkspace {
 
   renderResults(results) {
     if (results.length === 0) {
+      if (!this.currentQuery || !this.currentQuery.trim()) {
+        this.resultsList.innerHTML = `
+          <div class="search-state-empty">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span style="font-weight: 500; margin-top: 8px;">Search developer documentation, code, and web sources</span>
+          </div>
+        `;
+        return;
+      }
       this.resultsList.innerHTML = `
         <div class="search-state-empty">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <span style="font-weight: 600; margin-top: 8px;">No results found for "${this.escapeHTML(this.currentQuery)}"</span>
-          <span style="font-size: 12px; color: var(--text-subtle); margin-top: 4px;">Try searching another keyword or switching the source category tab.</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span style="font-weight: 500; margin-top: 8px;">No results found for "${this.escapeHTML(this.currentQuery)}"</span>
         </div>
       `;
       return;
@@ -1410,6 +1675,8 @@ class SearchWorkspace {
       const catBadgeClass =
         cat === "stackoverflow" ? "badge-so" :
         cat === "github" ? "badge-gh" :
+        cat === "wikipedia" ? "badge-doc" :
+        cat === "hackernews" ? "badge-warning" :
         cat === "offline" ? "badge-offline" :
         cat === "doc" ? "badge-doc" :
         cat === "it" ? "badge-success" :
@@ -1435,20 +1702,20 @@ class SearchWorkspace {
           </div>
         ` : ""}
         <div class="search-result-meta-row">
-          ${item.stars ? `<span>⭐ ${item.stars.toLocaleString()}</span>` : ""}
-          ${item.score ? `<span>▲ ${item.score} votes</span>` : ""}
-          ${item.is_answered ? `<span style="color: var(--success-text);">✓ Accepted</span>` : ""}
-          ${item.date ? `<span>📅 ${this.escapeHTML(item.date)}</span>` : ""}
+          ${item.stars ? `<span>${item.stars.toLocaleString()} stars</span>` : ""}
+          ${item.score ? `<span>${item.score} votes</span>` : ""}
+          ${item.is_answered ? `<span style="color: var(--success-text);">Accepted</span>` : ""}
+          ${item.date ? `<span>${this.escapeHTML(item.date)}</span>` : ""}
         </div>
         <div class="search-result-footer">
           <span class="search-result-source">${this.escapeHTML(sourceLabel)}</span>
           <div class="search-card-actions">
-            <button type="button" class="btn-card-action btn-study-browser" title="Read &amp; Study in Research Reader">Read / Study 📖</button>
-            <button type="button" class="btn-card-action btn-preview-action" title="Preview Result">👁 Preview</button>
-            <button type="button" class="btn-card-action btn-insert-ref" title="Insert Reference into notebook">+ Ref</button>
-            ${item.code ? `<button type="button" class="btn-card-action btn-insert-code" title="Insert Executable Code Block">+ Code</button>` : ""}
-            <button type="button" class="btn-card-action btn-bookmark-action" title="Bookmark / Save Resource">🔖</button>
-            ${item.url ? `<a href="${this.escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer" class="btn-card-action" title="Open source link">↗</a>` : ""}
+            <button type="button" class="btn-card-action btn-study-browser" title="Read in Research Reader">Read</button>
+            <button type="button" class="btn-card-action btn-insert-ref" title="Insert into notebook">+ Insert</button>
+            <button type="button" class="btn-card-action btn-bookmark-action" title="Save Resource">Save</button>
+            ${item.url ? `<a href="${this.escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer" class="btn-card-action" title="Open external link">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            </a>` : ""}
           </div>
         </div>
       `;
@@ -1468,26 +1735,14 @@ class SearchWorkspace {
         copyBtn.addEventListener("click", (e) => {
           e.stopPropagation();
           navigator.clipboard.writeText(item.code);
-          copyBtn.textContent = "Copied!";
+          copyBtn.textContent = "Copied";
           setTimeout(() => (copyBtn.textContent = "Copy"), 1500);
         });
       }
 
-      // Actions: Insert Ref & Insert Code
+      // Action: Insert (Code if available, otherwise reference)
       card.querySelector(".btn-insert-ref").addEventListener("click", () => {
-        this.insertResultIntoNotebook(item, "reference");
-      });
-
-      const insertCodeBtn = card.querySelector(".btn-insert-code");
-      if (insertCodeBtn) {
-        insertCodeBtn.addEventListener("click", () => {
-          this.insertResultIntoNotebook(item, "code");
-        });
-      }
-
-      // Preview Action
-      card.querySelector(".btn-preview-action").addEventListener("click", () => {
-        this.openPreview(item);
+        this.insertResultIntoNotebook(item, item.code ? "both" : "reference");
       });
 
       // Bookmark Action
@@ -1504,9 +1759,12 @@ class SearchWorkspace {
             category: item.category,
             folder: "General"
           });
-          bookmarkBtn.textContent = "✓";
+          bookmarkBtn.textContent = "Saved";
           bookmarkBtn.style.color = "var(--success-text)";
-          setTimeout(() => (bookmarkBtn.textContent = "🔖"), 1500);
+          setTimeout(() => {
+            bookmarkBtn.textContent = "Save";
+            bookmarkBtn.style.color = "";
+          }, 1500);
         } catch (_) {}
       });
 
@@ -1588,8 +1846,12 @@ class SearchWorkspace {
             <span class="history-meta">${h.category} · ${h.results_count} results · ${h.created_at ? h.created_at.slice(0, 10) : ""}</span>
           </div>
           <div class="history-actions">
-            <button type="button" class="btn-rerun-query" title="Run search again">🔍</button>
-            <button type="button" class="btn-del-history" title="Delete entry">✕</button>
+            <button type="button" class="btn-rerun-query" title="Run search again">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+            <button type="button" class="btn-del-history" title="Delete entry">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
           </div>
         `;
 
@@ -1631,7 +1893,7 @@ class SearchWorkspace {
       countBadge.textContent = `${saved.length} saved`;
 
       if (saved.length === 0) {
-        list.innerHTML = `<div class="search-state-empty"><span>No bookmarked resources. Click 🔖 on any search result to save it here.</span></div>`;
+        list.innerHTML = `<div class="search-state-empty"><span>No bookmarked resources. Click Save on any search result to keep it here.</span></div>`;
         return;
       }
 
@@ -1649,9 +1911,11 @@ class SearchWorkspace {
           <div class="search-result-footer">
             <span class="search-result-source">${this.escapeHTML(s.source || "Saved")}</span>
             <div class="search-card-actions">
-              <button type="button" class="btn-card-action btn-study-saved" title="Read in Research Reader">Read 📖</button>
+              <button type="button" class="btn-card-action btn-study-saved" title="Read in Research Reader">Read</button>
               <button type="button" class="btn-card-action btn-insert-saved" title="Insert into active notebook">+ Insert</button>
-              <button type="button" class="btn-card-action btn-del-saved" title="Remove bookmark">✕</button>
+              <button type="button" class="btn-card-action btn-del-saved" title="Remove bookmark">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
             </div>
           </div>
         `;
@@ -1702,7 +1966,7 @@ class SearchWorkspace {
             <div class="doc-pack-title">${this.escapeHTML(idx.name)}</div>
             <div class="doc-pack-desc">${this.escapeHTML(idx.description || "")}</div>
             <div class="doc-pack-meta">
-              <span class="badge ${isDownloaded ? 'badge-success' : 'badge-neutral'}">${isDownloaded ? '✓ Downloaded' : 'Available'}</span>
+              <span class="badge ${isDownloaded ? 'badge-success' : 'badge-neutral'}">${isDownloaded ? 'Downloaded' : 'Available'}</span>
               <span>${idx.entry_count} entries</span>
               <span>v${idx.version}</span>
             </div>
@@ -1783,7 +2047,6 @@ class SearchWorkspace {
       };
     } catch (_) {}
   }
-
   escapeHTML(str) {
     if (!str) return "";
     return str

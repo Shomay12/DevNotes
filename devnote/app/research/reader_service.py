@@ -13,6 +13,8 @@ from devnote.app.research.providers.base_provider import ExtractedContent
 from devnote.app.research.providers.github_provider import GitHubReaderProvider
 from devnote.app.research.providers.documentation_provider import DocumentationReaderProvider
 from devnote.app.research.providers.article_provider import ArticleReaderProvider
+from devnote.app.research.providers.stackoverflow_provider import StackOverflowReaderProvider
+from devnote.app.research.providers.wikipedia_provider import WikipediaReaderProvider
 
 # Simple In-Memory TTL Cache
 CACHE_TTL_SECONDS = 900  # 15 minutes
@@ -25,6 +27,8 @@ class ResearchReaderService:
     def __init__(self):
         self.github_provider = GitHubReaderProvider()
         self.doc_provider = DocumentationReaderProvider()
+        self.stackoverflow_provider = StackOverflowReaderProvider()
+        self.wikipedia_provider = WikipediaReaderProvider()
         self.article_provider = ArticleReaderProvider()
         self._cache: Dict[str, tuple[float, ExtractedContent]] = {}
 
@@ -79,6 +83,10 @@ class ResearchReaderService:
             try:
                 if self.github_provider.can_handle(detected):
                     result = await self.github_provider.extract(clean_url, detected, client)
+                elif self.stackoverflow_provider.can_handle(detected):
+                    result = await self.stackoverflow_provider.extract(clean_url, detected, client)
+                elif self.wikipedia_provider.can_handle(detected):
+                    result = await self.wikipedia_provider.extract(clean_url, detected, client)
                 elif self.doc_provider.can_handle(detected):
                     result = await self.doc_provider.extract(clean_url, detected, client)
                 else:

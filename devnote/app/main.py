@@ -28,6 +28,7 @@ from devnote.app.routers import (
     search_router,
     snippets_router,
 )
+from devnote.app.research import reader_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -140,6 +141,7 @@ app.include_router(pdf_router)
 app.include_router(pdf_compat_router)
 app.include_router(search_router)
 app.include_router(snippets_router)
+app.include_router(reader_router)
 
 # Mount static frontend directories
 css_dir = FRONTEND_DIR / "css"

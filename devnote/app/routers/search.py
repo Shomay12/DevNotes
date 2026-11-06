@@ -61,9 +61,20 @@ def search_workspace(
     return SearchService.search_all(db=db, query=q, category=category)
 
 @router.post("/web", response_model=SearchResponse)
-def search_web_resources(req: WebSearchRequest):
-    """Backwards-compatible web search endpoint."""
-    return SearchService.search_web(query=req.query, category=req.category)
+async def search_web_resources(
+    req: WebSearchRequest,
+    db: Session = Depends(get_db)
+):
+    """SearXNG-powered developer web search endpoint with graceful knowledge base fallback."""
+    query_req = SearchQueryRequest(
+        query=req.query,
+        category=req.category or "all",
+        provider="searxng"
+    )
+    resp = await unified_search_service.search(request=query_req, db=db)
+    if not resp.results:
+        return SearchService.search_web(query=req.query, category=req.category)
+    return resp
 
 # ==========================================
 # 2. Search History Endpoints
@@ -258,6 +269,7 @@ def remove_doc_index(
 # ==========================================
 
 @router.post("/saved", response_model=SavedResourceResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/bookmarks", response_model=SavedResourceResponse, status_code=status.HTTP_201_CREATED)
 def save_resource(
     req: SavedResourceCreate,
     db: Session = Depends(get_db)
@@ -296,6 +308,7 @@ def save_resource(
     )
 
 @router.get("/saved", response_model=List[SavedResourceResponse])
+@router.get("/bookmarks", response_model=List[SavedResourceResponse])
 def get_saved_resources(
     folder: Optional[str] = Query(default=None, description="Filter by folder"),
     db: Session = Depends(get_db)
@@ -325,6 +338,7 @@ def get_saved_resources(
     ]
 
 @router.delete("/saved/{resource_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/bookmarks/{resource_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_saved_resource(
     resource_id: str,
     db: Session = Depends(get_db)
@@ -341,21 +355,24 @@ def delete_saved_resource(
 # 5. Search Settings Endpoints
 # ==========================================
 
-DEFAULT_SEARCH_PROVIDER = "all"
+DEFAULT_SEARCH_PROVIDER = "searxng"
 
 @router.get("/settings", response_model=SearchSettings)
 def get_search_settings():
-    """Returns current search engine configuration without exposing secret keys."""
+    """Returns current search engine configuration with SearXNG as default."""
     global DEFAULT_SEARCH_PROVIDER
+    searxng = os.environ.get("SEARXNG_URL", "http://localhost:8080")
     google_key = os.environ.get("GOOGLE_API_KEY", "")
     google_cse = os.environ.get("GOOGLE_CSE_ID", "")
     gh_token = os.environ.get("GITHUB_TOKEN", "")
 
     return SearchSettings(
+        searxng_url=searxng if searxng else "http://localhost:8080",
         google_cse_id=google_cse if google_cse else None,
         has_google_key=bool(google_key),
         has_github_token=bool(gh_token),
         default_provider=DEFAULT_SEARCH_PROVIDER,
+        searxng_categories=["general", "it", "science"],
         enable_offline_search=True,
         enable_cache=unified_search_service.cache.enabled
     )
@@ -366,6 +383,11 @@ def update_search_settings(req: SearchSettingsUpdate):
     global DEFAULT_SEARCH_PROVIDER
     if req.default_provider is not None:
         DEFAULT_SEARCH_PROVIDER = req.default_provider
+
+    if req.searxng_url is not None:
+        os.environ["SEARXNG_URL"] = req.searxng_url.strip()
+        if "searxng" in unified_search_service.providers:
+            unified_search_service.providers["searxng"].endpoint = req.searxng_url.strip().rstrip("/")
 
     if req.google_api_key is not None:
         os.environ["GOOGLE_API_KEY"] = req.google_api_key

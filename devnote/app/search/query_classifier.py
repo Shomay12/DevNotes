@@ -119,19 +119,19 @@ class QueryClassifier:
 
         if any(re.search(pat, q_lower) for pat in cls.ERROR_PATTERNS):
             intent = "error"
-            recommended_providers = ["stackoverflow", "github", "devdocs", "local_docs"]
+            recommended_providers = ["stackoverflow", "github", "devdocs", "local_docs", "searxng"]
         elif any(re.search(pat, q_lower) for pat in cls.CODE_PATTERNS):
             intent = "code"
-            recommended_providers = ["github", "devdocs", "stackoverflow", "local_docs"]
+            recommended_providers = ["github", "devdocs", "stackoverflow", "local_docs", "searxng"]
         elif any(re.search(pat, q_lower) for pat in cls.API_PATTERNS):
             intent = "api"
-            recommended_providers = ["devdocs", "local_docs", "google", "github"]
+            recommended_providers = ["devdocs", "local_docs", "searxng", "github"]
         elif any(re.search(pat, q_lower) for pat in cls.RESEARCH_PATTERNS):
             intent = "research"
-            recommended_providers = ["google", "github", "devdocs"]
+            recommended_providers = ["searxng", "github", "devdocs"]
         else:
             intent = "concept"
-            recommended_providers = ["devdocs", "local_docs", "google", "stackoverflow"]
+            recommended_providers = ["devdocs", "local_docs", "searxng", "stackoverflow"]
 
         # Tokenize meaningful keywords
         clean_words = re.findall(r"[a-zA-Z0-9_\-\.\:]{2,}", q)

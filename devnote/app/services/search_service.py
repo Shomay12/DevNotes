@@ -1,3 +1,4 @@
+import os
 import re
 import uuid
 from typing import List, Dict, Any, Optional
@@ -285,13 +286,14 @@ class SearchService:
                 matched.append(SearchResultItem(**item))
 
         # Add external web search link item
+        endpoint = os.environ.get("SEARXNG_URL", "http://localhost:8080")
         matched.append(SearchResultItem(
-            id=f"web-external-{uuid.uuid4().hex[:6]}",
-            title=f"Search online docs for '{q}'",
+            id=f"searxng-web-{uuid.uuid4().hex[:6]}",
+            title=f"SearXNG Search for '{q}'",
             category="web",
-            snippet=f"Explore official documentation, GitHub repositories, and StackOverflow answers for {q}.",
-            source="Developer Web Engine",
-            url=f"https://devdocs.io/#q={q.replace(' ', '+')}"
+            snippet=f"Query SearXNG meta-search for official documentation, technical articles, and GitHub code for '{q}'.",
+            source="SearXNG",
+            url=f"{endpoint}/search?q={q.replace(' ', '+')}&categories=general,it,science"
         ))
 
         return SearchResponse(

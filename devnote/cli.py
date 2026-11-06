@@ -90,9 +90,6 @@ def get_active_storage_dir(args_dir: Optional[str] = None) -> Path:
         except Exception:
             pass
 
-    dev_storage = Path(__file__).resolve().parent.parent / "storage"
-    if dev_storage.exists():
-        return dev_storage
     return get_user_data_dir()
 
 

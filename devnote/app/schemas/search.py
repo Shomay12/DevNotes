@@ -106,17 +106,21 @@ class DocDownloadRequest(BaseModel):
     index_id: str
 
 class SearchSettings(BaseModel):
+    searxng_url: Optional[str] = "http://localhost:8080"
+    default_provider: str = "searxng"
+    searxng_categories: Optional[List[str]] = ["general", "it", "science"]
+    enable_offline_search: bool = True
+    enable_cache: bool = True
     google_cse_id: Optional[str] = None
     has_google_key: bool = False
     has_github_token: bool = False
-    default_provider: str = "all"
-    enable_offline_search: bool = True
-    enable_cache: bool = True
 
 class SearchSettingsUpdate(BaseModel):
+    searxng_url: Optional[str] = None
+    default_provider: Optional[str] = None
+    searxng_categories: Optional[List[str]] = None
+    enable_offline_search: Optional[bool] = None
+    enable_cache: Optional[bool] = None
     google_api_key: Optional[str] = None
     google_cse_id: Optional[str] = None
     github_token: Optional[str] = None
-    default_provider: Optional[str] = None
-    enable_offline_search: Optional[bool] = None
-    enable_cache: Optional[bool] = None

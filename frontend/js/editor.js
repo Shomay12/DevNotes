@@ -588,13 +588,40 @@ class NotebookEditor {
 
   /**
    * Insert Search Result Item directly into current notebook
-   * Never overwrites existing blocks! Supports insertion modes: 'both', 'reference', 'code'.
+   * Never overwrites existing blocks! Supports insertion modes: 'both', 'reference', 'code', 'evidence'.
    */
   insertSearchResult(searchItem, mode = "both") {
     if (!this.notebook) return;
 
-    // 1. Insert Reference (Heading + Description + Source Link)
-    if (mode === "both" || mode === "reference") {
+    const today = new Date().toISOString().slice(0, 10);
+
+    // 1. Insert Evidence Quote Block
+    if (mode === "evidence") {
+      const quoteText = searchItem.evidence || searchItem.quote || searchItem.snippet || "";
+      const noteText = searchItem.note || searchItem.explanation || "";
+      const sourceTitle = searchItem.title || "Research Source";
+      const sourceUrl = searchItem.url || "";
+
+      let blockContent = "";
+      if (quoteText) {
+        const quotedLines = quoteText.split("\n").map(l => `> ${l}`).join("\n");
+        blockContent += `${quotedLines}\n>\n`;
+      }
+      blockContent += `> **Source:** ${sourceUrl ? `[${sourceTitle}](${sourceUrl})` : sourceTitle}\n`;
+      blockContent += `> **Retrieved:** ${today}`;
+      if (noteText) {
+        blockContent += `\n>\n> **Note:** ${noteText}`;
+      }
+
+      const evidenceBlock = {
+        id: `block-${this.generateUUID()}`,
+        type: "paragraph",
+        content: blockContent.trim(),
+      };
+      this.blocks.push(evidenceBlock);
+    }
+    // 2. Insert Standard Reference (Heading + Description + Source Link)
+    else if (mode === "both" || mode === "reference") {
       const titleBlock = {
         id: `block-${this.generateUUID()}`,
         type: "heading",
@@ -605,7 +632,10 @@ class NotebookEditor {
 
       let refContent = searchItem.snippet || "";
       if (searchItem.url) {
-        refContent += `\n\nSource: ${searchItem.source || "DevSearch"} (${searchItem.url})`;
+        refContent += `\n\nSource: ${searchItem.source || "DevSearch"} (${searchItem.url})\nRetrieved: ${today}`;
+      }
+      if (searchItem.note) {
+        refContent += `\n\nPersonal Note: ${searchItem.note}`;
       }
       const snipBlock = {
         id: `block-${this.generateUUID()}`,
@@ -615,7 +645,7 @@ class NotebookEditor {
       this.blocks.push(snipBlock);
     }
 
-    // 2. Insert Executable Code Block
+    // 3. Insert Executable Code Block
     if ((mode === "both" || mode === "code") && searchItem.code) {
       const codeBlock = {
         id: `block-${this.generateUUID()}`,
@@ -631,7 +661,7 @@ class NotebookEditor {
 
     this.renderBlocks();
     this.scheduleAutosave();
-    const actionLabel = mode === "code" ? "code block" : mode === "reference" ? "reference" : "content";
+    const actionLabel = mode === "code" ? "code block" : mode === "reference" ? "reference" : mode === "evidence" ? "evidence citation" : "content";
     this.app.showToast(`Inserted ${actionLabel} from "${searchItem.title}"`, "success");
 
     // Scroll to bottom

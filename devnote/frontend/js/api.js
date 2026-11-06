@@ -260,6 +260,26 @@ const API = {
     });
   },
 
+  async getBookmarks(folder = null) {
+    const params = new URLSearchParams();
+    if (folder) params.append("folder", folder);
+    const qs = params.toString() ? `?${params.toString()}` : "";
+    return this.request(`/api/search/bookmarks${qs}`);
+  },
+
+  async saveBookmark(data) {
+    return this.request("/api/search/bookmarks", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+
+  async deleteBookmark(id) {
+    return this.request(`/api/search/bookmarks/${id}`, {
+      method: "DELETE",
+    });
+  },
+
   async getSearchSettings() {
     return this.request("/api/search/settings");
   },
@@ -269,6 +289,17 @@ const API = {
       method: "PUT",
       body: JSON.stringify(data),
     });
+  },
+
+  // Research Reader
+  async readResearchContent(url, refresh = false) {
+    const params = new URLSearchParams({ url, refresh: refresh ? "true" : "false" });
+    return this.request(`/api/research/read?${params.toString()}`);
+  },
+
+  async checkIframeFraming(url) {
+    const params = new URLSearchParams({ url });
+    return this.request(`/api/research/check-frame?${params.toString()}`);
   },
 
   // Snippets

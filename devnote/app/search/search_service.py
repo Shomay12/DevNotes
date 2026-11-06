@@ -1,3 +1,4 @@
+import os
 import asyncio
 from typing import List, Dict, Any, Optional
 from sqlalchemy.orm import Session
@@ -17,6 +18,7 @@ from devnote.app.search.providers.devdocs_provider import DevDocsProvider
 from devnote.app.search.providers.stackoverflow_provider import StackOverflowProvider
 from devnote.app.search.providers.github_provider import GitHubProvider
 from devnote.app.search.providers.google_provider import GoogleProvider
+from devnote.app.search.providers.searxng_provider import SearXNGProvider
 from devnote.app.search.providers.local_docs_provider import LocalDocsProvider
 from devnote.app.search.providers.notebooks_provider import NotebooksSearchProvider
 
@@ -27,6 +29,7 @@ class UnifiedSearchService:
             "stackoverflow": StackOverflowProvider(),
             "github": GitHubProvider(),
             "google": GoogleProvider(),
+            "searxng": SearXNGProvider(),
             "local_docs": LocalDocsProvider(),
             "notebooks": NotebooksSearchProvider(),
         }
@@ -83,29 +86,34 @@ class UnifiedSearchService:
         target_providers: List[BaseSearchProvider] = []
         if prov and prov in self.providers:
             target_providers = [self.providers[prov]]
+        elif cat in ("web", "general", "it", "science"):
+            target_providers = [self.providers["searxng"], self.providers["devdocs"]]
         elif cat == "doc":
-            target_providers = [self.providers["devdocs"], self.providers["local_docs"]]
+            target_providers = [self.providers["devdocs"], self.providers["local_docs"], self.providers["searxng"]]
         elif cat in ("stackoverflow", "error"):
-            target_providers = [self.providers["stackoverflow"], self.providers["github"]]
+            target_providers = [self.providers["stackoverflow"], self.providers["github"], self.providers["searxng"]]
         elif cat == "github":
             target_providers = [self.providers["github"]]
         elif cat == "code":
-            target_providers = [self.providers["github"], self.providers["devdocs"], self.providers["notebooks"]]
+            target_providers = [self.providers["github"], self.providers["devdocs"], self.providers["notebooks"], self.providers["searxng"]]
         elif cat == "offline":
             target_providers = [self.providers["local_docs"]]
         elif cat == "notebook":
             target_providers = [self.providers["notebooks"]]
-        elif cat == "web":
-            target_providers = [self.providers["google"], self.providers["devdocs"]]
         else:
-            # "all": Use recommended providers from classification plus local docs & notebooks
+            # "all": Use recommended providers from classification plus local docs, notebooks, and searxng
             active_keys = set(classification.recommended_providers)
             active_keys.add("local_docs")
             active_keys.add("notebooks")
+            active_keys.add("searxng")
             target_providers = [p for k, p in self.providers.items() if k in active_keys]
 
         # 4. Asynchronously query targeted providers in parallel
-        filters = {"language": lang or classification.language, "framework": fw or classification.framework}
+        filters = {
+            "category": cat,
+            "language": lang or classification.language,
+            "framework": fw or classification.framework
+        }
 
         tasks = [p.search(q, filters) for p in target_providers]
         raw_responses = await asyncio.gather(*tasks, return_exceptions=True)

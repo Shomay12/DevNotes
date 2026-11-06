@@ -4,9 +4,9 @@
 
 /* Developer Search Workspace Panel */
 #developer-search-panel {
-  width: 480px;
-  min-width: 320px;
-  max-width: 60%;
+  width: 50%;
+  min-width: 340px;
+  max-width: 85%;
   height: 100vh;
   background-color: var(--bg-secondary);
   border-right: 1px solid var(--border-subtle);
@@ -15,6 +15,15 @@
   flex-shrink: 0;
   z-index: 15;
   transition: width var(--transition-normal);
+}
+
+#developer-search-panel.resizing {
+  transition: none !important;
+}
+
+#developer-search-panel.expanded {
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 #developer-search-panel.collapsed {
@@ -424,6 +433,284 @@
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* DevSearch Status Indicator & Split Controls */
+.devsearch-status-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.devsearch-status-pill.online {
+  background-color: var(--success-light);
+  color: var(--success-text);
+}
+
+.devsearch-status-pill.offline {
+  background-color: var(--warning-light);
+  color: var(--warning-text);
+}
+
+.devsearch-offline-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background-color: var(--warning-light);
+  color: var(--warning-text);
+  font-size: 11.5px;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+/* Research Browser Toolbar & View */
+#devsearch-view-browser {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+#devsearch-view-browser.active {
+  display: flex;
+}
+
+.research-browser-toolbar {
+  height: 40px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: var(--bg-secondary);
+  flex-shrink: 0;
+}
+
+.research-browser-toolbar .btn-browser-back-results {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.research-browser-toolbar .btn-browser-back-results:hover {
+  background-color: var(--bg-hover);
+}
+
+.browser-url-bar-wrapper {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+.browser-url-input {
+  width: 100%;
+  height: 26px;
+  padding: 2px 8px;
+  font-size: 11.5px;
+  font-family: var(--font-mono, monospace);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  outline: none;
+  text-overflow: ellipsis;
+}
+
+.browser-url-input:focus {
+  border-color: var(--accent-primary);
+}
+
+.research-browser-frame-container {
+  flex: 1;
+  min-height: 160px;
+  position: relative;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.research-browser-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* Browser Embedding Fallback */
+.browser-embed-fallback {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-primary);
+  z-index: 10;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fallback-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.fallback-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--text-primary);
+}
+
+.fallback-banner-text span {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.fallback-summary-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fallback-article-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.fallback-article-snippet {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Study & Evidence Capture Dock */
+.study-evidence-dock {
+  flex-shrink: 0;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-normal);
+}
+
+.study-evidence-dock.collapsed .evidence-dock-body {
+  display: none;
+}
+
+.evidence-dock-header {
+  padding: 6px 12px;
+  background-color: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dock-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-toggle-evidence-dock {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 11px;
+  padding: 2px 6px;
+}
+
+.evidence-dock-body {
+  padding: 8px 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.evidence-inputs-row {
+  display: flex;
+  gap: 8px;
+}
+
+.evidence-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.evidence-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.evidence-textarea {
+  width: 100%;
+  height: 52px;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-family: inherit;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  resize: vertical;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.evidence-textarea:focus {
+  border-color: var(--accent-primary);
+}
+
+.evidence-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.evidence-actions-row .btn {
+  font-size: 11.5px;
+  padding: 4px 10px;
 }
 
 /* Preview Drawer (Slide-in) */

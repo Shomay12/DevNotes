@@ -1,0 +1,37 @@
+# ==============================================================================
+# SearXNG Configuration for DevNote Local Development
+# ==============================================================================
+
+use_default_settings: true
+
+general:
+  debug: false
+  instance_name: "DevNote SearXNG"
+
+search:
+  safe_search: 0
+  autocomplete: "duckduckgo"
+  default_lang: ""
+  languages:
+    - all
+    - en
+  formats:
+    - html
+    - json
+
+server:
+  port: 8080
+  bind_address: "0.0.0.0"
+  secret_key: "devnote_searxng_secret_key_32_characters_long!"
+  limiter: false
+  image_proxy: false
+
+ui:
+  static_use_hash: true
+  default_locale: "en"
+  theme_args:
+    simple_style: "auto"
+
+enabled_plugins:
+  - 'Hash plugin'
+  - 'Open Access DOI rewrite'

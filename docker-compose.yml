@@ -5,10 +5,38 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: devnote-app
     ports:
       - "8000:8000"
     volumes:
       - ./storage:/app/storage
     environment:
       - PYTHONUNBUFFERED=1
+      - SEARXNG_URL=http://searxng:8080
+      - DEVNOTE_DEFAULT_SEARCH_PROVIDER=searxng
+    depends_on:
+      - searxng
     restart: unless-stopped
+
+  searxng:
+    container_name: devnote-searxng
+    image: searxng/searxng:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./searxng:/etc/searxng:rw
+    environment:
+      - SEARXNG_BASE_URL=http://localhost:8080/
+      - SEARXNG_SECRET=devnote_searxng_secret_key_32_characters_long!
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "2"

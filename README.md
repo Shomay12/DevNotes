@@ -7,7 +7,7 @@
   <a href="https://fastapi.tiangolo.com"><img src="https://img.shields.io/badge/FastAPI-0.110%2B-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/></a>
   <a href="https://www.sqlite.org"><img src="https://img.shields.io/badge/SQLite-WAL%20Mode-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite WAL"/></a>
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img src="https://img.shields.io/badge/Vanilla_JS-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="Vanilla JS"/></a>
-  <a href="#-running-automated-tests"><img src="https://img.shields.io/badge/Tests-38%20Passing%20(100%25)-10b981?style=for-the-badge&logo=pytest&logoColor=white" alt="Pytest 100% Passing"/></a>
+  <a href="#-running-automated-tests"><img src="https://img.shields.io/badge/Tests-43%20Passing%20(100%25)-10b981?style=for-the-badge&logo=pytest&logoColor=white" alt="Pytest 100% Passing"/></a>
   <a href="#license"><img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License"/></a>
 </p>
 
@@ -208,32 +208,50 @@ print(f"Time of Flight: {tof:.2f}s | Max Height: {hmax:.2f}m")
 - **Error Panel**: Captures tracebacks (`stderr`) in a dedicated red error box.
 - **Stop Button**: Halts long-running loops or timeouts immediately.
 
-### 3. DevSearch — Unified Developer Search Engine (50% Split Screen)
-Click **Search** in the sidebar or press <kbd>Cmd</kbd> + <kbd>K</kbd> to activate the unified search panel:
-- **Multi-Provider Unified Search**:
+### 3. DevSearch Lite — Integrated Side-by-Side Developer Research Workspace
+Click **Search** in the sidebar or press <kbd>Cmd</kbd> + <kbd>K</kbd> to activate the side-by-side research workspace:
+- **Default Search Provider: SearXNG Meta-Search**:
+  - Replaces Google Search with privacy-first metasearch aggregation across DuckDuckGo, Brave, Startpage, Wikipedia, arXiv, and developer documentation.
+  - **No Paid APIs or Google Credentials Required**: Fully functional out of the box with zero third-party API keys and zero page scraping.
+  - **Configurable Endpoint**: Set via `SEARXNG_URL` environment variable or dynamically inside DevSearch Settings (default: `http://localhost:8080`).
+  - **Docker Compose for Local Development**: Spin up an isolated, self-hosted SearXNG instance with one command:
+    ```bash
+    # Start self-hosted SearXNG with pre-configured JSON API
+    docker compose up -d searxng
+    ```
+- **Supported Search Categories**:
+  - `General Web`: Wide web search across general engines.
+  - `IT & Dev`: Targeted developer documentation, GitHub code, Stack Overflow, and engineering sources.
+  - `Science`: Academic papers, research journals, arXiv, and scientific reference materials.
+- **Integrated Research Browser (Sandboxed Iframe + Safe Fallback)**:
+  - **Side-by-Side Study**: Study documentation and technical articles directly alongside your active notebook without leaving the application or losing context.
+  - **Browser Navigation Toolbar**: Full navigation controls featuring `← Results`, `← Back`, `→ Forward`, `↻ Reload`, URL bar navigation, `📋 Copy URL`, `🔖 Bookmark`, and `↗ Open in New Tab`.
+  - **Safe X-Frame-Options & CSP Fallback**: Sites that restrict iframe embedding automatically surface an inline reader card with title, summary, code examples, and 1-click external tab access, respecting security boundaries.
+  - **Reader / Frame Toggle**: Switch between live embedded web frame and distilled technical summary mode with a single click.
+- **Study & Evidence Capture Dock**:
+  - Docked directly beneath the research browser to capture quotes, technical notes, and code snippets while reading.
+  - **+ Insert Evidence**: Formats clean markdown blockquotes with exact quote, source title, clickable source URL, retrieval date, and personal explanations into the active notebook.
+  - **Strict No-Overwrite Guarantee**: All insertions append cleanly as new blocks, never modifying or destroying existing notebook content.
+  - **+ Ref / + Code / + Insert All**: Flexible 1-click ingestion for citations, executable code cells, or combined reference blocks.
+- **Multi-Provider Search Architecture**:
+  - **SearXNG Meta-Search (Default)**: Aggregated technical, IT, and science search.
   - **Official Documentation**: Searches Python 3, MDN Web Docs, FastAPI, Docker, PostgreSQL, Git, Flutter, and DevDocs.
-  - **Stack Overflow**: Real-time programming discussions, debugging error fixes, and accepted answers via official Stack Exchange API with attribution.
+  - **Stack Overflow**: Real-time programming discussions, debugging error fixes, and accepted answers via official Stack Exchange API.
   - **GitHub Search**: Open-source repositories, stars, licenses, and implementations via GitHub REST API.
   - **Local Offline Documentation (SQLite FTS5)**: Full-text search across downloaded doc indexes completely offline with zero internet access.
-  - **Google Custom Search**: Optional Google Programmable Search integration without web scraping.
   - **Workspace Notebooks**: Search across your own notes, blocks, and code snippets.
 - **Deterministic Query Classification & Intelligent Routing**:
   - Automatically identifies query intent (**Error Troubleshooting**, **Documentation / Concept**, **Code Implementation**, **API Reference**, **Technical Research**).
   - Detects programming language (**Python, JavaScript, Rust, Go, Java, C++, SQL, Dart**) and framework (**FastAPI, Django, React, Node.js, Docker, Git, PyTorch**).
   - Routes queries to the highest-scoring providers and applies multi-dimensional BM25 + intent ranking.
-- **Dynamic Filters**:
-  - Filter by Category: `All Sources`, `Official Docs`, `Code Examples`, `Stack Overflow`, `GitHub`, `Offline (FTS5)`, `Notebooks`.
+- **Dynamic Filters & Offline Resilience**:
+  - Category tabs: `All Sources`, `IT & Dev`, `Science`, `General Web`, `Official Docs`, `Code Examples`, `Stack Overflow`, `GitHub`, `Offline (FTS5)`, `Notebooks`.
   - Filter by Language and Framework.
-- **1-Click Notebook Ingestion (Zero Overwrite Guarantee)**:
-  - **+ Ref**: Appends section heading, summary, and clickable source reference URL.
-  - **+ Code**: Appends an executable Python or JavaScript code cell ready to run.
-  - **👁 Preview**: Opens an integrated slide-in drawer to read full documentation and code before inserting.
-  - **🔖 Bookmark**: Saves to DevSearch saved resources collection.
-- **Search History & Offline Docs Manager**:
-  - Persistent local search history with 1-click re-run and purge options.
-  - Manage downloaded documentation packs (Python, FastAPI, JavaScript, Docker, Git) with live storage statistics.
-- **Draggable Divider & Fullscreen Toggle**:
-  - Grab the vertical split divider to adjust panel proportions, or click the maximize button to expand DevSearch to 100% width.
+  - Live **● Online / ● Offline** status indicator with seamless fallback to local SQLite FTS5 documentation and saved bookmarks.
+- **Draggable Divider & Responsive Layout Persistence**:
+  - Drag the vertical split divider (`touch-action: none` with Pointer Events support) to customize split ratio (50%/50% default).
+  - Remembers panel width and layout state across sessions in `localStorage`.
+  - Header actions to reset split (50%), toggle full-screen (100%), or collapse panel (<kbd>Cmd</kbd> + <kbd>K</kbd>).
 
 ### 4. Apple Pencil & Stylus Handwriting
 Integrated canvas block powered by the HTML5 Canvas & Pointer Events API:

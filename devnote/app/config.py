@@ -12,7 +12,7 @@ PACKAGE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = PACKAGE_DIR
 
 # Storage directories (platform-specific user data directory with graceful fallback)
-_storage_dirs = ensure_storage_dirs()
+_storage_dirs = ensure_storage_dirs(get_user_data_dir())
 STORAGE_DIR = _storage_dirs["storage"]
 NOTEBOOKS_DIR = _storage_dirs["notebooks"]
 EXPORTS_DIR = _storage_dirs["exports"]

@@ -97,24 +97,23 @@ def ensure_storage_dirs(data_dir: Optional[Path] = None) -> dict[str, Path]:
     Ensures data directory and all subdirectories exist.
     If permissions are restricted on the primary path, falls back gracefully.
     """
-    if data_dir:
-        base = data_dir
+    local_storage = Path.cwd() / "storage"
+    if not data_dir and local_storage.exists():
+        base = local_storage
     else:
-        # Check workspace storage first if running inside source tree
-        dev_storage = Path(__file__).resolve().parent.parent / "storage"
-        if dev_storage.exists():
-            base = dev_storage
-        else:
-            base = get_user_data_dir()
+        base = data_dir or get_user_data_dir()
 
     try:
         base.mkdir(parents=True, exist_ok=True)
+        # Test file creation to ensure directory is truly writable
+        test_file = base / ".write_test"
+        test_file.touch()
+        test_file.unlink()
     except (PermissionError, OSError):
-        # Fallback to local workspace storage or tmp
-        dev_storage = Path(__file__).resolve().parent.parent / "storage"
         try:
-            dev_storage.mkdir(parents=True, exist_ok=True)
-            base = dev_storage
+            local = Path.cwd() / "storage"
+            local.mkdir(parents=True, exist_ok=True)
+            base = local
         except (PermissionError, OSError):
             base = Path(tempfile.gettempdir()) / "devnote_storage"
             base.mkdir(parents=True, exist_ok=True)
@@ -126,10 +125,7 @@ def ensure_storage_dirs(data_dir: Optional[Path] = None) -> dict[str, Path]:
         "uploads": base / "uploads",
     }
     for p in dirs.values():
-        try:
-            p.mkdir(parents=True, exist_ok=True)
-        except (PermissionError, OSError):
-            pass
+        p.mkdir(parents=True, exist_ok=True)
     return dirs
 
 

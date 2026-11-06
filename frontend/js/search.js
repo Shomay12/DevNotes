@@ -89,6 +89,10 @@ class SearchWorkspace {
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
           Offline Docs
         </button>
+        <button type="button" class="devsearch-nav-btn" data-view="llm">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
+          Assistant
+        </button>
         <button type="button" class="devsearch-nav-btn" data-view="settings">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
           Settings
@@ -321,7 +325,110 @@ class SearchWorkspace {
           <div class="devsearch-doc-indexes-list"></div>
         </div>
 
-        <!-- 6. SETTINGS VIEW -->
+        <!-- 6. AI ASSISTANT / LLM ADD-ON VIEW -->
+        <div class="devsearch-view" id="devsearch-view-llm">
+          <div class="devsearch-section-header">
+            <span>AI Assistant</span>
+            <div class="llm-header-actions" style="display: flex; gap: 6px;">
+              <button type="button" class="btn btn-sm btn-clear-llm-chat" title="Clear Chat History">Clear</button>
+              <button type="button" class="btn btn-sm btn-toggle-llm-settings" title="Configure LLM System">Settings</button>
+            </div>
+          </div>
+
+          <div class="llm-workspace-view">
+            <!-- Active Status Banner -->
+            <div class="llm-status-banner">
+              <div class="llm-status-indicator">
+                <span class="llm-status-dot"></span>
+                <span class="llm-current-provider-label">Ollama (Local)</span>
+                <span style="color: var(--text-muted); font-size: 11px;" class="llm-current-model-label">llama3</span>
+              </div>
+              <span style="font-size: 10px; color: var(--text-subtle);">Local / Cloud AI</span>
+            </div>
+
+            <!-- Collapsible Settings Drawer -->
+            <div class="llm-config-drawer" id="llm-config-drawer">
+              <div style="font-size: 11.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px;">
+                LLM Configuration
+              </div>
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label style="display: block; font-size: 11px; font-weight: 600; margin-bottom: 3px;">Provider System</label>
+                <select id="llm-setting-provider" class="form-input" style="font-size: 12px; padding: 4px 6px;">
+                  <option value="ollama">Ollama (Local &amp; Private - http://localhost:11434)</option>
+                  <option value="openai">OpenAI (GPT-4o / GPT-4o-mini)</option>
+                  <option value="gemini">Google Gemini (gemini-1.5-flash)</option>
+                  <option value="custom">Custom OpenAI-Compatible (LM Studio / vLLM / OpenRouter)</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label style="display: block; font-size: 11px; font-weight: 600; margin-bottom: 3px;">Endpoint URL</label>
+                <input type="text" id="llm-setting-endpoint" class="form-input" placeholder="http://localhost:11434" style="font-size: 12px; padding: 4px 6px;" />
+              </div>
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label style="display: block; font-size: 11px; font-weight: 600; margin-bottom: 3px;">Model Identifier</label>
+                <input type="text" id="llm-setting-model" class="form-input" placeholder="llama3" style="font-size: 12px; padding: 4px 6px;" />
+              </div>
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label style="display: block; font-size: 11px; font-weight: 600; margin-bottom: 3px;">API Key (Optional for Ollama)</label>
+                <input type="password" id="llm-setting-apikey" class="form-input" placeholder="sk-... or blank for local" style="font-size: 12px; padding: 4px 6px;" />
+              </div>
+              <div class="form-group" style="margin-bottom: 8px;">
+                <label style="display: block; font-size: 11px; font-weight: 600; margin-bottom: 3px;">Assistant Persona</label>
+                <select id="llm-setting-persona" class="form-input" style="font-size: 12px; padding: 4px 6px;">
+                  <option value="developer">Expert Technical Pair Programmer</option>
+                  <option value="notes">Concise Study Notes Generator</option>
+                  <option value="tutor">Algorithm &amp; Mathematics Tutor</option>
+                </select>
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 4px;">
+                <button type="button" class="btn btn-sm btn-test-llm" style="font-size: 11.5px;">Test Connection</button>
+                <button type="button" class="btn btn-primary btn-sm btn-save-llm-config" style="font-size: 11.5px;">Save Settings</button>
+              </div>
+              <div class="llm-test-feedback" style="font-size: 11px; margin-top: 4px; display: none;"></div>
+            </div>
+
+            <!-- Quick Action Prompt Chips (No Emojis) -->
+            <div class="llm-quick-chips">
+              <button type="button" class="llm-chip" data-action="explain-code">Explain Code Cell</button>
+              <button type="button" class="llm-chip" data-action="summarize-notebook">Summarize Notebook</button>
+              <button type="button" class="llm-chip" data-action="summarize-reader">Summarize Research</button>
+              <button type="button" class="llm-chip" data-action="fix-bug">Debug / Fix Bug</button>
+              <button type="button" class="llm-chip" data-action="generate-python">Python Solution</button>
+            </div>
+
+            <!-- Interactive Chat Messages Feed -->
+            <div class="llm-chat-messages" id="llm-chat-messages">
+              <div class="llm-msg llm-msg-assistant">
+                <div class="llm-msg-content">
+                  <strong>Welcome to DevNote AI Assistant</strong>
+                  <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-secondary);">
+                    This assistant helps with code explanations, debugging, research summaries, and note generation. Connect local models via Ollama or LM Studio, or cloud providers (OpenAI, Gemini).
+                  </p>
+                  <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-secondary);">
+                    Click any action chip above or type your question below.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Prompt Input Bar -->
+            <div class="llm-input-area">
+              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-bottom: 2px;">
+                <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                  <input type="checkbox" id="llm-attach-context" checked />
+                  Attach active notebook / reader context
+                </label>
+                <span>Enter to send / Shift+Enter for newline</span>
+              </div>
+              <div class="llm-input-row">
+                <textarea class="llm-textarea" id="llm-prompt-input" rows="1" placeholder="Ask assistant about code, concepts, or notes..."></textarea>
+                <button type="button" class="btn-send-llm" id="btn-send-llm">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. SETTINGS VIEW -->
         <div class="devsearch-view" id="devsearch-view-settings">
           <div class="devsearch-section-header">
             <span>DevSearch Provider Configuration</span>
@@ -1507,6 +1614,7 @@ class SearchWorkspace {
     if (viewName === "history") this.loadHistory();
     else if (viewName === "saved") this.loadSavedResources();
     else if (viewName === "docs") this.loadDocIndexes();
+    else if (viewName === "llm") this.loadLLMAssistant();
     else if (viewName === "settings") this.loadSettings();
     else if (viewName === "browser" && !this.currentBrowserItem) {
       this.renderReaderSearchHub();
@@ -2046,6 +2154,344 @@ class SearchWorkspace {
         setTimeout(() => (saveBtn.textContent = "Save Settings"), 1500);
       };
     } catch (_) {}
+  }
+
+  // ------------------------------------------
+  // LLM & AI Assistant Add-On
+  // ------------------------------------------
+  loadLLMAssistant() {
+    const configDrawer = this.panel.querySelector("#llm-config-drawer");
+    const toggleConfigBtn = this.panel.querySelector(".btn-toggle-llm-settings");
+    const saveConfigBtn = this.panel.querySelector(".btn-save-llm-config");
+    const testBtn = this.panel.querySelector(".btn-test-llm");
+    const testFeedback = this.panel.querySelector(".llm-test-feedback");
+    const clearChatBtn = this.panel.querySelector(".btn-clear-llm-chat");
+    const sendBtn = this.panel.querySelector("#btn-send-llm");
+    const promptInput = this.panel.querySelector("#llm-prompt-input");
+    const chips = this.panel.querySelectorAll(".llm-chip");
+
+    // Load saved settings from localStorage
+    let settings = {};
+    try {
+      settings = JSON.parse(localStorage.getItem("devnote_llm_settings") || "{}");
+    } catch (_) {}
+
+    const providerSelect = this.panel.querySelector("#llm-setting-provider");
+    const endpointInput = this.panel.querySelector("#llm-setting-endpoint");
+    const modelInput = this.panel.querySelector("#llm-setting-model");
+    const apiKeyInput = this.panel.querySelector("#llm-setting-apikey");
+    const personaSelect = this.panel.querySelector("#llm-setting-persona");
+
+    if (providerSelect && settings.provider) providerSelect.value = settings.provider;
+    if (endpointInput && settings.endpoint) endpointInput.value = settings.endpoint;
+    if (modelInput && settings.model) modelInput.value = settings.model;
+    if (apiKeyInput && settings.apiKey) apiKeyInput.value = settings.apiKey;
+    if (personaSelect && settings.persona) personaSelect.value = settings.persona;
+
+    this.updateLLMStatusBanner(settings);
+
+    if (!this._llmBound) {
+      this._llmBound = true;
+
+      if (toggleConfigBtn && configDrawer) {
+        toggleConfigBtn.addEventListener("click", () => {
+          configDrawer.classList.toggle("open");
+        });
+      }
+
+      if (providerSelect) {
+        providerSelect.addEventListener("change", () => {
+          const prov = providerSelect.value;
+          if (prov === "ollama") {
+            endpointInput.value = "http://localhost:11434";
+            modelInput.value = "llama3";
+          } else if (prov === "openai") {
+            endpointInput.value = "https://api.openai.com/v1";
+            modelInput.value = "gpt-4o-mini";
+          } else if (prov === "gemini") {
+            endpointInput.value = "https://generativelanguage.googleapis.com";
+            modelInput.value = "gemini-1.5-flash";
+          } else if (prov === "custom") {
+            endpointInput.value = "http://localhost:1234/v1";
+            modelInput.value = "default";
+          }
+        });
+      }
+
+      if (saveConfigBtn) {
+        saveConfigBtn.addEventListener("click", () => {
+          const newSettings = {
+            provider: providerSelect ? providerSelect.value : "ollama",
+            endpoint: endpointInput ? endpointInput.value.trim() : "",
+            model: modelInput ? modelInput.value.trim() : "llama3",
+            apiKey: apiKeyInput ? apiKeyInput.value.trim() : "",
+            persona: personaSelect ? personaSelect.value : "developer",
+          };
+          localStorage.setItem("devnote_llm_settings", JSON.stringify(newSettings));
+          this.updateLLMStatusBanner(newSettings);
+          if (configDrawer) configDrawer.classList.remove("open");
+          if (testFeedback) {
+            testFeedback.style.display = "block";
+            testFeedback.style.color = "var(--success-text, #10b981)";
+            testFeedback.textContent = "Settings saved successfully!";
+            setTimeout(() => (testFeedback.style.display = "none"), 2000);
+          }
+        });
+      }
+
+      if (testBtn) {
+        testBtn.addEventListener("click", async () => {
+          if (!testFeedback) return;
+          testFeedback.style.display = "block";
+          testFeedback.style.color = "var(--text-muted)";
+          testFeedback.textContent = "Connecting to LLM...";
+          try {
+            const res = await API.testLLMConnection({
+              provider: providerSelect ? providerSelect.value : "ollama",
+              endpoint: endpointInput ? endpointInput.value.trim() : "",
+              model: modelInput ? modelInput.value.trim() : "",
+              api_key: apiKeyInput ? apiKeyInput.value.trim() : ""
+            });
+            if (res.status === "ok") {
+              testFeedback.style.color = "var(--success-text, #10b981)";
+              testFeedback.textContent = `Connected! Latency: ${res.latency_ms || 0}ms`;
+            } else {
+              testFeedback.style.color = "var(--error-text, #ef4444)";
+              testFeedback.textContent = `Connection failed: ${res.message || "Unknown error"}`;
+            }
+          } catch (err) {
+            testFeedback.style.color = "var(--error-text, #ef4444)";
+            testFeedback.textContent = `Error: ${err.message}`;
+          }
+        });
+      }
+
+      if (clearChatBtn) {
+        clearChatBtn.addEventListener("click", () => {
+          const chatContainer = this.panel.querySelector("#llm-chat-messages");
+          if (chatContainer) {
+            chatContainer.innerHTML = `
+              <div class="llm-msg llm-msg-assistant">
+                <div class="llm-msg-content">
+                  <strong>Welcome to DevNote AI Assistant</strong>
+                  <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-secondary);">
+                    Chat history cleared. How can I help you today?
+                  </p>
+                </div>
+              </div>
+            `;
+          }
+        });
+      }
+
+      if (sendBtn) {
+        sendBtn.addEventListener("click", () => this.sendLLMChatMessage());
+      }
+
+      if (promptInput) {
+        promptInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            this.sendLLMChatMessage();
+          }
+        });
+      }
+
+      chips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+          const action = chip.dataset.action;
+          this.handleLLMChipAction(action);
+        });
+      });
+    }
+  }
+
+  updateLLMStatusBanner(settings) {
+    const provLabel = this.panel.querySelector(".llm-current-provider-label");
+    const modelLabel = this.panel.querySelector(".llm-current-model-label");
+    const provMap = {
+      ollama: "Ollama (Local)",
+      openai: "OpenAI",
+      gemini: "Google Gemini",
+      custom: "Custom / LM Studio"
+    };
+    if (provLabel) provLabel.textContent = provMap[settings.provider || "ollama"] || "Ollama (Local)";
+    if (modelLabel) modelLabel.textContent = settings.model || "llama3";
+  }
+
+  async sendLLMChatMessage(customPrompt = null) {
+    const promptInput = this.panel.querySelector("#llm-prompt-input");
+    const chatContainer = this.panel.querySelector("#llm-chat-messages");
+    const attachContextCheckbox = this.panel.querySelector("#llm-attach-context");
+    const sendBtn = this.panel.querySelector("#btn-send-llm");
+
+    const prompt = customPrompt || (promptInput ? promptInput.value.trim() : "");
+    if (!prompt) return;
+
+    if (promptInput && !customPrompt) {
+      promptInput.value = "";
+      promptInput.style.height = "auto";
+    }
+
+    const userMsg = document.createElement("div");
+    userMsg.className = "llm-msg llm-msg-user";
+    userMsg.innerHTML = `<div class="llm-msg-content">${this.escapeHTML(prompt)}</div>`;
+    chatContainer.appendChild(userMsg);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    let context = "";
+    if (attachContextCheckbox && attachContextCheckbox.checked) {
+      if (this.editor && this.editor.notebook) {
+        const title = this.editor.notebook.title || "Untitled";
+        const blocks = this.editor.notebook.blocks || [];
+        const contentPieces = blocks.map(b => `[${b.type.toUpperCase()}]: ${b.content}`).join("\n\n");
+        context += `Active Notebook: "${title}"\n${contentPieces}\n\n`;
+      }
+      if (this.currentBrowserItem) {
+        context += `Active Research Document: "${this.currentBrowserItem.title || ''}" (${this.currentBrowserItem.url || ''})\n${this.currentBrowserItem.snippet || ''}\n`;
+      }
+    }
+
+    let settings = {};
+    try {
+      settings = JSON.parse(localStorage.getItem("devnote_llm_settings") || "{}");
+    } catch (_) {}
+
+    const loadingMsg = document.createElement("div");
+    loadingMsg.className = "llm-msg llm-msg-assistant";
+    loadingMsg.innerHTML = `<div class="llm-msg-content" style="color: var(--text-muted); font-style: italic;">Thinking...</div>`;
+    chatContainer.appendChild(loadingMsg);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    if (sendBtn) sendBtn.disabled = true;
+
+    try {
+      const payload = {
+        prompt,
+        provider: settings.provider || "ollama",
+        endpoint: settings.endpoint || null,
+        api_key: settings.apiKey || null,
+        model: settings.model || null,
+        context: context.trim() || null,
+        temperature: 0.7
+      };
+
+      const res = await API.chatWithLLM(payload);
+      const rawResponse = res.response || "No response received.";
+      const formattedHTML = this.formatLLMResponseHTML(rawResponse);
+
+      const codeMatch = rawResponse.match(/```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/);
+      const extractedCode = codeMatch ? codeMatch[2] : null;
+      const codeLang = codeMatch ? (codeMatch[1] || "python") : "python";
+
+      loadingMsg.innerHTML = `
+        <div class="llm-msg-content">${formattedHTML}</div>
+        <div class="llm-msg-actions">
+          <button type="button" class="btn-llm-action btn-insert-note">+ Insert Note</button>
+          ${extractedCode ? `<button type="button" class="btn-llm-action btn-insert-code">+ Insert Code</button>` : ''}
+          <button type="button" class="btn-llm-action btn-copy-response">Copy</button>
+          <span style="margin-left: auto; font-size: 10px; color: var(--text-subtle);">
+            ${this.escapeHTML(res.model || settings.model || "assistant")}
+          </span>
+        </div>
+      `;
+
+      loadingMsg.querySelector(".btn-insert-note").addEventListener("click", () => {
+        if (this.editor) {
+          this.editor.addBlock("markdown", rawResponse);
+          const btn = loadingMsg.querySelector(".btn-insert-note");
+          btn.textContent = "Inserted!";
+          setTimeout(() => (btn.textContent = "+ Insert Note"), 1500);
+        }
+      });
+
+      const insertCodeBtn = loadingMsg.querySelector(".btn-insert-code");
+      if (insertCodeBtn && extractedCode) {
+        insertCodeBtn.addEventListener("click", () => {
+          if (this.editor) {
+            this.editor.addBlock("code", extractedCode, codeLang);
+            insertCodeBtn.textContent = "Inserted!";
+            setTimeout(() => (insertCodeBtn.textContent = "+ Insert Code"), 1500);
+          }
+        });
+      }
+
+      loadingMsg.querySelector(".btn-copy-response").addEventListener("click", () => {
+        navigator.clipboard.writeText(rawResponse);
+        const btn = loadingMsg.querySelector(".btn-copy-response");
+        btn.textContent = "Copied!";
+        setTimeout(() => (btn.textContent = "Copy"), 1500);
+      });
+
+    } catch (err) {
+      loadingMsg.innerHTML = `<div class="llm-msg-content" style="color: var(--error-text, #ef4444);">AI Assistant Error: ${this.escapeHTML(err.message)}</div>`;
+    } finally {
+      if (sendBtn) sendBtn.disabled = false;
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  }
+
+  handleLLMChipAction(action) {
+    if (action === "explain-code") {
+      let activeCode = "";
+      if (this.editor && this.editor.notebook) {
+        const blocks = this.editor.notebook.blocks || [];
+        const codeBlock = blocks.find(b => b.type === "code");
+        if (codeBlock) activeCode = codeBlock.content;
+      }
+      const prompt = activeCode
+        ? `Please explain this code block line-by-line and identify any edge cases:\n\`\`\`python\n${activeCode}\n\`\`\``
+        : "Explain how to write clean, maintainable Python code with unit tests.";
+      this.sendLLMChatMessage(prompt);
+    } else if (action === "summarize-notebook") {
+      const title = this.editor && this.editor.notebook ? this.editor.notebook.title : "Workspace";
+      this.sendLLMChatMessage(`Summarize the concepts and code in notebook "${title}" into structured study notes with bullet points.`);
+    } else if (action === "summarize-reader") {
+      const pageTitle = this.currentBrowserItem ? this.currentBrowserItem.title : "the active article";
+      this.sendLLMChatMessage(`Provide a concise technical summary and key insights from ${pageTitle}.`);
+    } else if (action === "fix-bug") {
+      let activeCode = "";
+      if (this.editor && this.editor.notebook) {
+        const blocks = this.editor.notebook.blocks || [];
+        const codeBlock = blocks.find(b => b.type === "code");
+        if (codeBlock) activeCode = codeBlock.content;
+      }
+      this.sendLLMChatMessage(`Review this code for bugs, logic errors, or performance bottlenecks, and provide an optimized fix:\n\`\`\`python\n${activeCode || '# paste code here'}\n\`\`\``);
+    } else if (action === "generate-python") {
+      const input = this.panel.querySelector("#llm-prompt-input");
+      if (input) {
+        input.value = "Write a complete Python implementation for: ";
+        input.focus();
+      }
+    }
+  }
+
+  formatLLMResponseHTML(text) {
+    if (!text) return "";
+    let html = this.escapeHTML(text);
+
+    // Code blocks
+    html = html.replace(/```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g, (match, lang, code) => {
+      return `<pre style="margin: 8px 0; padding: 10px; background: var(--bg-tertiary); border-radius: var(--radius-sm); overflow-x: auto; font-family: var(--font-mono); font-size: 12px;"><code>${code}</code></pre>`;
+    });
+
+    // Inline code
+    html = html.replace(/`([^`]+)`/g, "<code style='background: var(--bg-tertiary); padding: 1px 4px; border-radius: 3px; font-family: var(--font-mono); font-size: 0.9em;'>$1</code>");
+
+    // Headings
+    html = html.replace(/^### (.*$)/gim, "<h4 style='margin: 8px 0 4px 0; font-size: 13.5px; font-weight: 700;'>$1</h4>");
+    html = html.replace(/^## (.*$)/gim, "<h3 style='margin: 10px 0 4px 0; font-size: 14.5px; font-weight: 700;'>$1</h3>");
+    html = html.replace(/^# (.*$)/gim, "<h2 style='margin: 12px 0 6px 0; font-size: 16px; font-weight: 800;'>$1</h2>");
+
+    // Bold & italic
+    html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    html = html.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+
+    // Line breaks
+    html = html.replace(/\n\n/g, "<p style='margin: 6px 0;'></p>");
+    html = html.replace(/\n/g, "<br/>");
+
+    return html;
   }
   escapeHTML(str) {
     if (!str) return "";

@@ -222,6 +222,9 @@ class DevNoteApp {
     if (nav === "search") {
       this.searchWorkspace.toggleCollapse(false);
       this.searchWorkspace.switchView("search");
+    } else if (nav === "llm") {
+      this.searchWorkspace.toggleCollapse(false);
+      this.searchWorkspace.switchView("llm");
     } else if (nav === "snippets") {
       this.openSnippetsModal();
     } else if (nav === "recent") {
